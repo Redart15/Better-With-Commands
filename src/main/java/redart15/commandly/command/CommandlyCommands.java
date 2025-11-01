@@ -4,7 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.net.command.CommandManager;
 
-public class CommadlyCommands {
+public class CommandlyCommands {
 
 
 	@Environment(EnvType.CLIENT)
