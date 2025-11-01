@@ -21,7 +21,7 @@ import java.util.*;
 @SuppressWarnings("ALL") //cause this drives me nuts
 public class CommandGrow implements CommandManager.CommandRegistry {
 	private static int worldHeight = 256;
-	private static byte radius = 9;
+	private static byte radius = 3;
 
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher.register((ArgumentBuilderLiteral) ArgumentBuilderLiteral.literal("grow")
@@ -36,12 +36,13 @@ public class CommandGrow implements CommandManager.CommandRegistry {
 		World world = source.getWorld();
 		Set<ChunkCoordinate> loaded = CommandGrow.getLoadedChunks(world, player.chunkCoordX, player.chunkCoordY, player.chunkCoordZ);
 		List<Point> bonemealTargets = getAllBonemeableBlocks(world, loaded);
-		grow(world, bonemealTargets);
+		source.sendTranslatableMessage("commandly.command.grow", new Object[]{grow(world, bonemealTargets)});
 		return 1;
 	}
 
-	public void grow(World world, List<Point> targets){
+	public int grow(World world, List<Point> targets){
 		Random rand = new Random();
+		int count = 0;
 		for(Point p : targets){
 			int x = p.getIntX();
 			int y = p.getIntY();
@@ -51,8 +52,10 @@ public class CommandGrow implements CommandManager.CommandRegistry {
 			BlockLogic logic = block.getLogic();
 			if (block.getLogic() instanceof IBonemealable) {
 				((IBonemealable)logic).onBonemealUsed(new ItemStack(Items.DYE), (Player) null, world, x,y,z, Side.TOP, 0,0);
+				count++;
 			}
 		}
+		return count;
 	}
 
 	public List<Point> getAllBonemeableBlocks(World world,Set<ChunkCoordinate> loaded) {
