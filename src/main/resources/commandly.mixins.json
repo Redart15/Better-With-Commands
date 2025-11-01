@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "redart15.commandly.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ItemToolPickaxeMixinVeinMining",
+    "StopGrassSpreadingMixin",
+    "StopMossSpreading"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

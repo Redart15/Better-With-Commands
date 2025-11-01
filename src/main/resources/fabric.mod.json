@@ -1,16 +1,15 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "commandly",
   "version": "${version}",
-
-  "name": "Example Mod",
-  "description": "This mod aims to help new BTA modders.",
+  "name": "Commandly",
+  "description": "This mod is a port of Single Player Commands",
   "authors": [
-    "Turnip Labs"
+    "Redart15"
   ],
   "contact": {
     "homepage": "",
-    "sources": ""
+    "sources": "https://github.com/Redart15/Commandly"
   },
 
 	"icon": "icon.png",
@@ -18,27 +17,21 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-			"turniplabs.examplemod.ExampleMod"
-    ],
-		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
-		],
-		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
-		],
-		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
-		]
+    "main": ["redart15.commandly.CommandlyMod"],
+		"beforeGameStart": ["redart15.commandly.CommandlyMod"],
+		"afterGameStart": ["redart15.commandly.CommandlyMod"],
+		"recipesReady": ["redart15.commandly.CommandlyMod"],
+		"beforeClientStart": ["redart15.commandly.CommandlyClient"],
+		"afterClientStart": ["redart15.commandly.CommandlyClient"],
+		"server": ["redart15.commandly.CommandlyServer"]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+		"commandly.mixins.json"
   ],
 
   "depends": {
-		"minecraft": "*",
-    "fabricloader": ">=0.15.5"
-  },
-  "suggests": {
-  }
+    "fabricloader": ">=0.15.5",
+		"halplibe": ">=5.3.1"
+	},
+  "suggests": {}
 }
