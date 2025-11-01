@@ -52,7 +52,7 @@ public class VeinMining {
         return new VeinMining(world, itemStack, x, y, z, player);
     }
 
-    public void setminingTag(Tag<Block<?>> mininTag) {
+    public void setMiningTag(Tag<Block<?>> mininTag) {
         this.miningTag = mininTag;
     }
 
@@ -184,11 +184,12 @@ public class VeinMining {
             return false;
         }
         if (player.getGamemode().dropBlockOnBreak()) {
-            ItemStack[] drops = this.getBreakResult(block, this.world, dropCause, pos.x, pos.y, pos.z, meta, (TileEntity) null);
             if (EntityItem.enableItemClumping) {
+                ItemStack[] drops = this.getBreakResult(block, this.world, dropCause, pos.x, pos.y, pos.z, meta, (TileEntity) null);
 				this.clumpingList.addAllItems(drops);
             } else {
-                this.dropItems(drops, pos);
+                block.getLogic().harvestBlock(world, player, pos.x, pos.y, pos.z, meta,(TileEntity) null);
+//                this.dropItems(drops, pos);
             }
         }
         this.world.playBlockEvent(this.player, 2001, pos.x, pos.y, pos.z, block.id());
