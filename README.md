@@ -1,4 +1,4 @@
-# Better With Commands
+# Commandly
 [![GitHub Release](https://img.shields.io/github/v/release/Redart15/Commandly?labelColor=%230c97ab&color=%23ffa501)](https://github.com/Redart15/Better-With-Commands/releases)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Redart15/Commandly?labelColor=%230c97ab&color=%23ffa501)
 ](https://github.com/Redart15/Better-With-Commands/commits/7.3/)
