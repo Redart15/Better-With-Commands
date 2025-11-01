@@ -52,12 +52,14 @@ public class VeinMining {
         return new VeinMining(world, itemStack, x, y, z, player);
     }
 
-    public void setMiningTag(Tag<Block<?>> mininTag) {
+    public VeinMining setMiningTag(Tag<Block<?>> mininTag) {
         this.miningTag = mininTag;
+        return this;
     }
 
-    public void setRadius(int radius) {
+    public VeinMining setRadius(int radius) {
         this.radius = radius;
+        return this;
     }
 
 
