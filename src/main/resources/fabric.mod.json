@@ -21,6 +21,7 @@
 		"beforeGameStart": ["redart15.commandly.CommandlyMod"],
 		"afterGameStart": ["redart15.commandly.CommandlyMod"],
 		"recipesReady": ["redart15.commandly.CommandlyMod"],
+		"client": ["redart15.commandly.CommandlyClient"],
 		"beforeClientStart": ["redart15.commandly.CommandlyClient"],
 		"afterClientStart": ["redart15.commandly.CommandlyClient"],
 		"server": ["redart15.commandly.CommandlyServer"]
