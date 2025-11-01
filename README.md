@@ -1,6 +1,6 @@
 # Better With Commands
-[![GitHub Release](https://img.shields.io/github/v/release/Redart15/Better-With-Commands?labelColor=%230c97ab&color=%23ffa501)](https://github.com/Redart15/Better-With-Commands/releases)
-[![GitHub last commit](https://img.shields.io/github/last-commit/Redart15/Better-With-Commands?labelColor=%230c97ab&color=%23ffa501)
+[![GitHub Release](https://img.shields.io/github/v/release/Redart15/Commandly?labelColor=%230c97ab&color=%23ffa501)](https://github.com/Redart15/Better-With-Commands/releases)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Redart15/Commandly?labelColor=%230c97ab&color=%23ffa501)
 ](https://github.com/Redart15/Better-With-Commands/commits/7.3/)
 
 Single Player Command was my very first mod I have ever installed in Minecraft. While most of the commands have made to modern Minecraft some have not.
