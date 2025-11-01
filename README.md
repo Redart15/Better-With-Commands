@@ -1,37 +1,35 @@
-# Example Mod
+# Better With Commands
+[![GitHub Release](https://img.shields.io/github/v/release/Redart15/Better-With-Commands?labelColor=%230c97ab&color=%23ffa501)](https://github.com/Redart15/Better-With-Commands/releases)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Redart15/Better-With-Commands?labelColor=%230c97ab&color=%23ffa501)
+](https://github.com/Redart15/Better-With-Commands/commits/7.3/)
 
-Template for making Babric mods for BTA!
+Single Player Command was my very first mod I have ever installed in Minecraft. While most of the commands have made to modern Minecraft some have not.
+This mods aim to port some if not most of the missing feature as well as new ones from Single Player Commands to Better than Adventure.
 
-**Note: *DO NOT fork this repository unless you want to contribute!***
+## Screenshots
+Currently none
 
-## Prerequisites
-- JDK for Java 17 ([Eclipse Temurin](https://adoptium.net/temurin/releases/) recommended)
-- [Intellij IDEA](https://www.jetbrains.com/idea/download/) (Scroll down for the free community edition, if using linux **DO NOT** use the flatpak distribution)
-- Minecraft Development plugin (Optional, but highly recommended)
+## Commands
+This is a comprehensive list of all the commands that this mod currently support. 
+For each commands I will provide what version included the command, what argument the command requiresd and what the command does.
 
-## Setup instructions
+<div align="center">
    
+| Commands   | Arguments | Action | Version |
+| :-------- | :-------: | :------- | :-------: |
+| /grow  |none| grows all bonemeable plants in player loading radius| 1.0.0|
+   
+</div>
 
-1. Click the `Use this template` button on this repo's page above (Will only appear if logged in). Choose `Create a new repository`, you will be redirected to a new page. Enter your repo's name and description, and hit `Create repository`.  
-   To get your project, open IntelliJ IDEA and click `Clone Repository` (`Get from VCS` on older versions). Select `Repository URL` and enter your repo's url
+Aside from commands there are also additional gamerules. Some of the game rule were previously part of my other mods and as such predate this mod.
+Similar to commands, the individual rules are explained in a sentence or two; their type is shown, and the initial release version in which the rule debuted is listed.
 
-2. After the project has finished importing, close it and open it again.  
-   If that does not work, open the right sidebar with `Gradle` on it, open `Tasks` > `fabric` and run `ideaSyncTask`.
+<div align="center">
+   
+| Gamerules   | Type | Action | Version |
+| :-------- | :------- | :------- | :-------: |
+| doGrassSpreading  |boolean| prevents grass from spreading    | previosly NoMossSpreading |
+| doMossSpreading  |boolean| prevents moss from spreading     | previosly NoMossSpreading |
+| veinmining   |boolean| allows the mine an entire vein of ore at once just like treecapitator| 1.0.0 |
 
-3. Create a new run configuration by going in `Run > Edit Configurations`.  
-   Then click on the plus icon and select Gradle. In the `Tasks and Arguments` field enter `build`.  
-   Running it will build your finished jar files and put them in `build/libs/`.
-
-4. Lastly, open `File` > `Settings` and head to `Build, Execution, Development` > `Build Tools` > `Gradle`.  
-   Make sure `Build and run using` and `Run tests using` is set to `Gradle`.
-
-5. Done! Now, all that's left is to change every mention of `examplemod` and `turniplabs` to your own mod id and mod group, respectively. Happy modding!
-
-## Tips
-
-1. If you haven't already you should join the BTA modding discord! https://discord.gg/FTUNJhswBT
-2. You can set your username when launching the client run configuration by setting `--username <username>` in your program arguments.
-3. When launching the server run configuration you may want to remove the `nogui` program argument in order to see the regular server GUI.
-4. In Intellij you can double press shift or press ctrl+N to search class files, change the search from the default `Project Files` to `All Places` you can easily explore the classes for you dependencies and even BTA itself.
-5. In Intellij if ctrl+left click on a field or method you can quickly get information on when and where that field or method is assign or used.
-
+</div>
