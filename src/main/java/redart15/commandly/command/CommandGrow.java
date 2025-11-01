@@ -62,6 +62,9 @@ public class CommandGrow implements CommandManager.CommandRegistry {
 		List<Point> bonemeableBlocks = new ArrayList<Point>();
 		for(ChunkCoordinate coords: loaded){
 			bonemeableBlocks.addAll(getBonemeableBlocks(world, coords));
+			if(bonemeableBlocks.size() >= 2 << 16){
+				break;
+			}
 		}
 		return bonemeableBlocks;
 	}
