@@ -1,8 +1,6 @@
 package redart15.commandly.veincapitator;
 
-import net.minecraft.core.block.Block;
-import net.minecraft.core.block.BlockLogic;
-import net.minecraft.core.block.Blocks;
+import net.minecraft.core.block.*;
 import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.block.tag.BlockTags;
 import net.minecraft.core.data.tag.Tag;
@@ -18,6 +16,7 @@ import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.chunk.ChunkPosition;
 import org.jetbrains.annotations.NotNull;
+import redart15.commandly.CommandlyConfig;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,8 +25,9 @@ import java.util.*;
 import static redart15.commandly.veincapitator.OreTags.ORE;
 
 public class VeinMining {
-    private static final int MAX_VEIN_SIZE = 64;
-    private final World world;
+	private static final int MAX_VEIN_SIZE = 64;
+	public static final int MASK = 7;
+	private final World world;
     private final ItemStack tool;
     private final ChunkPosition point;
     private final Player player;
@@ -38,19 +38,28 @@ public class VeinMining {
     private HashSet<NamespaceID> miningGroup;
     private boolean onlyThisID = false;
     private ItemList clumpingList;
+	private EnumDropCause dropCause;
 
 
-    public VeinMining(World world, ItemStack itemStack, int x, int y, int z, Player player) {
+	public VeinMining(World world, ItemStack itemStack, int x, int y, int z, Player player) {
         this.world = world;
         this.tool = itemStack;
         this.point = new ChunkPosition(x, y, z);
         this.player = player;
         this.radius = 1;
+
+		ToolMaterial material = PickAxeRegister.getMaterial(tool.getItem());
+		this.dropCause = material.isSilkTouch() ? EnumDropCause.SILK_TOUCH : EnumDropCause.PROPER_TOOL;
     }
 
     public static VeinMining veinMining(World world, ItemStack itemStack, int x, int y, int z, Player player) {
         return new VeinMining(world, itemStack, x, y, z, player);
     }
+
+	public VeinMining setDropCause(EnumDropCause dropCause) {
+		this.dropCause = dropCause;
+		return this;
+	}
 
     public VeinMining setMiningTag(Tag<Block<?>> mininTag) {
         this.miningTag = mininTag;
@@ -62,7 +71,6 @@ public class VeinMining {
         return this;
     }
 
-
     public boolean mine(int blockId, Side side) {
         Block<?> block = Blocks.getBlock(blockId);
         if (block == null || !this.canBeVeinMined(block)) {
@@ -70,9 +78,6 @@ public class VeinMining {
         }
         this.miningGroup = this.getGroup(block);
         boolean itemStackDamageable = tool.isItemStackDamageable();
-
-        ToolMaterial material = PickAxeRegister.getMaterial(tool.getItem());
-        EnumDropCause dropCause = material.isSilkTouch() ? EnumDropCause.SILK_TOUCH : EnumDropCause.PROPER_TOOL;
 
         int veinSize = MAX_VEIN_SIZE;
         if (itemStackDamageable) {
@@ -86,7 +91,7 @@ public class VeinMining {
         }
 
         for (ChunkPosition pos : toBeMined) {
-            if (!this.breakBlock(pos, dropCause)) continue;
+            if (!this.breakBlock(pos)) continue;
             if (itemStackDamageable) {
                 tool.damageItem(1, player);
                 if (tool.stackSize <= 0) {
@@ -98,13 +103,13 @@ public class VeinMining {
         if (EntityItem.enableItemClumping) {
             this.clumpingList.dropAllItems();
         }
-
         return true;
     }
 
-    private boolean canBeVeinMined(Block<?> block) {
+	private boolean canBeVeinMined(Block<?> block) {
         Block<?> theBlock = world.getBlock(point.x, point.y, point.z);
-        if (theBlock == null || theBlock.id() != block.id()) {
+		int metadata = world.getBlockMetadata(point.x, point.y, point.z);
+        if (theBlock == null || theBlock.id() != block.id() || this.isSmartMiner(block, metadata)) {
             return false;
         }
         if (!block.hasTag(miningTag)) {
@@ -124,7 +129,14 @@ public class VeinMining {
         return block.hasTag(ORE) || this.languageKeyOre(block);
     }
 
-    private boolean languageKeyOre(Block<?> block) {
+	private boolean isSmartMiner(Block<?> block, int metadata) {
+		if(!CommandlyConfig.SMART_VEINMINER){
+			return false;
+		}
+		return !(block == null || block.getLogic() instanceof IPaintable) && (metadata >> 7) == 1;
+	}
+
+	private boolean languageKeyOre(Block<?> block) {
         String language_key = block.getLanguageKey(0);
         String[] substrings = language_key.split("\\.");
         for (String str : substrings) {
@@ -176,7 +188,7 @@ public class VeinMining {
         return visited;
     }
 
-    private boolean breakBlock(ChunkPosition pos, EnumDropCause dropCause) {
+    private boolean breakBlock(ChunkPosition pos) {
         Block<?> block = this.world.getBlock(pos.x, pos.y, pos.z);
         int meta = this.world.getBlockMetadata(pos.x, pos.y, pos.z);
         if (block == null) {
@@ -186,34 +198,30 @@ public class VeinMining {
             return false;
         }
         if (player.getGamemode().dropBlockOnBreak()) {
-            if (EntityItem.enableItemClumping) {
-                ItemStack[] drops = this.getBreakResult(block, this.world, dropCause, pos.x, pos.y, pos.z, meta, (TileEntity) null);
+			ItemStack[] drops = this.getBreakResult(block, this.world, dropCause, pos.x, pos.y, pos.z, meta, (TileEntity) null);
+			if (EntityItem.enableItemClumping) {
 				this.clumpingList.addAllItems(drops);
             } else {
-                block.getLogic().harvestBlock(world, player, pos.x, pos.y, pos.z, meta,(TileEntity) null);
-//                this.dropItems(drops, pos);
+                this.dropItems(drops, pos);
             }
+			player.addStat(block.getStat("stat_mined"), 1);
         }
         this.world.playBlockEvent(this.player, 2001, pos.x, pos.y, pos.z, block.id());
         return true;
-
     }
 
     protected void dropItems(ItemStack[] items, ChunkPosition pos) {
         if (items == null) {
             return;
         }
-        for (int i = 0; i < items.length; i++) {
-            ItemStack stack = items[i];
-            while (stack.stackSize > 0) {
-                this.world.dropItem(pos.x, pos.y, pos.z, stack.splitStack(1));
-            }
-        }
-
+		for (ItemStack stack : items) {
+			while (stack.stackSize > 0) {
+				this.world.dropItem(pos.x, pos.y, pos.z, stack.splitStack(1));
+			}
+		}
     }
 
-
-    private ItemStack[] getBreakResult(@NotNull Block<?> block, World world, EnumDropCause dropCause, int x, int y, int z, int meta, TileEntity tileEntity) {
+	private ItemStack[] getBreakResult(@NotNull Block<?> block, World world, EnumDropCause dropCause, int x, int y, int z, int meta, TileEntity tileEntity) {
         ItemStack[] result = block.getBreakResult(world, dropCause, x, y, z, meta, tileEntity);
         if (!this.canGetAdditionalBreakResults(block, tool.getItem(), meta)) {
             return result;
@@ -245,7 +253,7 @@ public class VeinMining {
         }
     }
 
-    public static class ItemList {
+    public class ItemList {
         private final World world;
         private final ChunkPosition point;
 		private final Map<ItemStack, Integer> itemList = new HashMap<>();
