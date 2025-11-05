@@ -108,8 +108,7 @@ public class VeinMining {
 
 	private boolean canBeVeinMined(Block<?> block) {
         Block<?> theBlock = world.getBlock(point.x, point.y, point.z);
-		int metadata = world.getBlockMetadata(point.x, point.y, point.z);
-        if (theBlock == null || theBlock.id() != block.id() || this.isSmartMiner(block, metadata)) {
+        if (theBlock == null || theBlock.id() != block.id()) {
             return false;
         }
         if (!block.hasTag(miningTag)) {
@@ -129,11 +128,11 @@ public class VeinMining {
         return block.hasTag(ORE) || this.languageKeyOre(block);
     }
 
-	private boolean isSmartMiner(Block<?> block, int metadata) {
+	private boolean isSmartMiner(@NotNull Block<?> block, int metadata) {
 		if(!CommandlyConfig.SMART_VEINMINER){
 			return false;
 		}
-		return !(block == null || block.getLogic() instanceof IPaintable) && (metadata >> 7) == 1;
+		return block.getLogic() instanceof IPaintable || (metadata >> MASK) == 1;
 	}
 
 	private boolean languageKeyOre(Block<?> block) {
@@ -175,6 +174,7 @@ public class VeinMining {
                         if (visited.contains(to)) continue;
                         Block<?> nextBlock = this.world.getBlock(to.x, to.y, to.z);
                         if (nextBlock == null || !this.miningGroup.contains(nextBlock.namespaceId())) continue;
+						if (isSmartMiner(nextBlock, world.getBlockMetadata(to.x, to.y, to.z))) continue;
                         visited.add(to);
                         queue.add(to);
                         veinSize--;
