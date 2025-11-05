@@ -4,6 +4,8 @@
   "package": "redart15.commandly.mixins.treecapitator",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BlockLogLogicMixinSmartPlace",
+    "SmartTreeCapitator"
   ],
   "client": [
   ],
