@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "redart15.commandly.mixins.veinminer",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BlockLogicOreCoalMixinSmartPlace",
+    "BlockLogicOreDiamondMixinSmartPlace",
+    "BlockLogicOreGoldMixinSmartPlace",
+    "BlockLogicOreIronMixinSmartPlace",
+    "BlockLogicOreNetherCoalMixinSmartPlace",
+    "BlockLogicOreRedstoneMixinSmartPlace"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

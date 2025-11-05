@@ -1,4 +1,4 @@
-package redart15.commandly.mixin;
+package redart15.commandly.mixins.mixin;
 
 import net.minecraft.core.block.BlockLogicMoss;
 import net.minecraft.core.world.World;
