@@ -24,7 +24,8 @@
 		"client": ["redart15.commandly.CommandlyClient"],
 		"beforeClientStart": ["redart15.commandly.CommandlyClient"],
 		"afterClientStart": ["redart15.commandly.CommandlyClient"],
-		"server": ["redart15.commandly.CommandlyServer"]
+		"server": ["redart15.commandly.CommandlyServer"],
+		"preLaunch": ["redart15.commandly.CommandlyPreLaunch"]
 	},
   "mixins": [
 		"commandly.mixins.json"
