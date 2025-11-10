@@ -1,1 +1,7 @@
 commandly.command.grow=%s plants have been grown.
+commandly.commandly.treecapitator.inactive=Enable SMART_TREECAPITATOR in config first.
+commandly.commandly.veinminer.inactive=Enable SMART_VEINMINER in config first.
+commandly.all.inactive=Enable either or both SMART_TREECAPITATOR and SMART_VEINMINER in config first.
+commadly.protected.fail= No new block were protected.
+commadly.protected.active= %d blocks were added to be protected.
+commadly.protected.tolarge=Cannot execute command, selected area is to big.
