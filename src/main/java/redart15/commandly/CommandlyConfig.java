@@ -41,7 +41,7 @@ public class CommandlyConfig {
 					LOGGER.info("Commandly Config initialized.");
 				}
 			} catch (IOException e) {
-				LOGGER.error("Commandly Config failed, deleted the config and try again.");
+				LOGGER.error("Commandly Config failed to generate, deleted the config and try again.");
 				throw new RuntimeException(e);
 			}
 		}
