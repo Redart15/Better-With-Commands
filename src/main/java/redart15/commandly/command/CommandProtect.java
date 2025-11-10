@@ -105,10 +105,10 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 			}
 		}
 		if (count_protected == 0) {
-			source.sendTranslatableMessage("commadly.protected.fail");
+			source.sendTranslatableMessage("commandly.protected.fail");
 			return code(FAIL);
 		}
-		source.sendTranslatableMessage("commadly.protected.active", count_protected);
+		source.sendTranslatableMessage("commandly.protected.active", count_protected);
 		return code(OK);
 	}
 
@@ -176,10 +176,10 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 			}
 		}
 		if (count_protected == 0) {
-			source.sendTranslatableMessage("commadly.protected.fail");
+			source.sendTranslatableMessage("commandly.protected.fail");
 			return code(FAIL);
 		}
-		source.sendTranslatableMessage("commadly.protected.active", count_protected);
+		source.sendTranslatableMessage("commandly.protected.active", count_protected);
 		return code(OK);
 	}
 
@@ -248,10 +248,10 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 			}
 		}
 		if (count_protected == 0) {
-			source.sendTranslatableMessage("commadly.protected.fail");
+			source.sendTranslatableMessage("commandly.protected.fail");
 			return code(FAIL);
 		}
-		source.sendTranslatableMessage("commadly.protected.active", count_protected);
+		source.sendTranslatableMessage("commandly.protected.active", count_protected);
 		return code(OK);
 	}
 }
