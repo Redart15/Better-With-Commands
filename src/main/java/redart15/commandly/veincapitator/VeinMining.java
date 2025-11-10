@@ -17,6 +17,7 @@ import net.minecraft.core.world.World;
 import net.minecraft.core.world.chunk.ChunkPosition;
 import org.jetbrains.annotations.NotNull;
 import redart15.commandly.CommandlyConfig;
+import redart15.commandly.CommandlyMod;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,7 +27,6 @@ import static redart15.commandly.veincapitator.OreTags.ORE;
 
 public class VeinMining {
 	private static final int MAX_VEIN_SIZE = 64;
-	public static final int MASK = 7;
 	private final World world;
     private final ItemStack tool;
     private final ChunkPosition point;
@@ -128,11 +128,15 @@ public class VeinMining {
         return block.hasTag(ORE) || this.languageKeyOre(block);
     }
 
-	private boolean isSmartMiner(@NotNull Block<?> block, int metadata) {
+	public static boolean canBeVeinMinedCommand(@NotNull Block<?> block) {
+		return (block.hasTag(ORE) || languageKeyOreCheck(block)) && !(block.getLogic() instanceof IPaintable);
+	}
+
+	private static boolean isSmartMiner(@NotNull Block<?> block, int metadata) {
 		if(!CommandlyConfig.SMART_VEINMINER){
 			return false;
 		}
-		return block.getLogic() instanceof IPaintable || (metadata >> MASK) == 1;
+		return block.getLogic() instanceof IPaintable || (metadata >> CommandlyMod.MASK) == 1;
 	}
 
 	private boolean languageKeyOre(Block<?> block) {
@@ -146,6 +150,17 @@ public class VeinMining {
         }
         return false;
     }
+
+	private static boolean languageKeyOreCheck(Block<?> block) {
+		String language_key = block.getLanguageKey(0);
+		String[] substrings = language_key.split("\\.");
+		for (String str : substrings) {
+			if (str.equalsIgnoreCase("ore")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
     private HashSet<NamespaceID> getGroup(Block<?> block) {
         if (onlyThisID) {
