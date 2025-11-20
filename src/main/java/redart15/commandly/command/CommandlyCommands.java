@@ -19,6 +19,8 @@ public class CommandlyCommands {
 	public static void registerClientCommands() {
 		CommandManager.registerCommand(new CommandGrow());
 		CommandManager.registerCommand(new CommandProtect());
+		CommandManager.registerCommand(new CommandAscend());
+		CommandManager.registerCommand(new CommandDescend());
 	}
 
 	@Environment(EnvType.SERVER)

@@ -15,6 +15,7 @@ import net.minecraft.core.net.command.helpers.DoubleCoordinate;
 import net.minecraft.core.net.command.helpers.DoubleCoordinates;
 import net.minecraft.core.world.World;
 import redart15.commandly.CommandlyConfig;
+import redart15.commandly.CommandlyMod;
 import redart15.commandly.treecapitator.TreeCapitator;
 import redart15.commandly.veincapitator.VeinMining;
 import turniplabs.halplibe.helper.EnvironmentHelper;
@@ -26,7 +27,6 @@ import static redart15.commandly.CommandlyMod.MASK;
 
 @SuppressWarnings("ALL") //cause this drives me nuts
 public class CommandProtect implements CommandManager.CommandRegistry {
-	public static final int MAX_BLOCK_COUNT = 589_824;
 
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
 		ArgumentBuilderLiteral<CommandSource> command =
@@ -157,7 +157,7 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 			throw new RuntimeException(e);
 		}
 
-		if ((int) Math.floor(1.25 * Math.PI * Math.pow(radius, 3)) > MAX_BLOCK_COUNT) {
+		if ((int) Math.floor(1.25 * Math.PI * Math.pow(radius, 3)) > CommandlyMod.MAX_BLOCK_COUNT) {
 			source.sendTranslatableMessage("commadly.protected.tolarge");
 			return code(CANNOT);
 		}
@@ -229,8 +229,8 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 		} catch (CommandSyntaxException e) {
 			throw new RuntimeException(e);
 		}
-		if (Math.abs(fx - sx) * Math.abs(fy - sy) * Math.abs(fz - sz) > MAX_BLOCK_COUNT) {
-			source.sendTranslatableMessage("commadly.protected.tolarge");
+		if (Math.abs(fx - sx) * Math.abs(fy - sy) * Math.abs(fz - sz) > CommandlyMod.MAX_BLOCK_COUNT) {
+			source.sendTranslatableMessage("commadly.protected.toolarge");
 			return code(CANNOT);
 		}
 

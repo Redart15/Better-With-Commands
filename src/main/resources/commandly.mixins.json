@@ -4,9 +4,10 @@
   "package": "redart15.commandly.mixins.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BlockLogicAxisAlignedMixinFix",
+    "ItemToolPickaxeMixinVeinMining",
     "StopGrassSpreadingMixin",
-    "StopMossSpreading",
-    "ItemToolPickaxeMixinVeinMining"
+    "StopMossSpreading"
   ],
   "client": [
   ],
