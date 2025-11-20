@@ -26,9 +26,9 @@ public class CommandDescend implements CommandManager.CommandRegistry {
 				.then(ArgumentBuilderRequired.argument("player", ArgumentTypeEntity.username())
 					.executes(CommandDescend::descend)));
 		CommandNode<CommandSource> registeredCommand = dispatcher.register(command);
-//		dispatcher.register((ArgumentBuilderLiteral)((ArgumentBuilderLiteral)ArgumentBuilderLiteral.literal("desc")
-//			.requires((t) -> ((CommandSource) t).hasAdmin())
-//			.redirect((CommandNode<Object>)(CommandNode<?>) registeredCommand)));
+		dispatcher.register((ArgumentBuilderLiteral)((ArgumentBuilderLiteral)ArgumentBuilderLiteral.literal("down")
+			.requires((t) -> ((CommandSource) t).hasAdmin())
+			.redirect((CommandNode<Object>)(CommandNode<?>) registeredCommand)));
 	}
 
 	private static int descend(CommandContext<Object> context) {
