@@ -14,9 +14,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import static redart15.commandly.CommandlyConfig.SMART_VALUE;
 
 @Mixin(value = BlockLogicOreCoal.class, remap = false)
-public class BlockLogicOreCoalMixinSmartPlace extends BlockLogic {
+public abstract class BlockLogicOreCoalMixinSmartPlace extends BlockLogic {
 
-	public BlockLogicOreCoalMixinSmartPlace(Block<?> block, Material material) {
+	protected BlockLogicOreCoalMixinSmartPlace(Block<?> block, Material material) {
 		super(block, material);
 	}
 

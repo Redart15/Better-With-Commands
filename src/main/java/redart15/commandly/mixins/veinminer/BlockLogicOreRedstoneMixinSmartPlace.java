@@ -17,10 +17,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import static redart15.commandly.CommandlyConfig.SMART_VALUE;
 
 @Mixin(value = BlockLogicOreRedstone.class, remap = false)
-public class BlockLogicOreRedstoneMixinSmartPlace extends BlockLogic {
+public abstract class BlockLogicOreRedstoneMixinSmartPlace extends BlockLogic {
 
 
-	public BlockLogicOreRedstoneMixinSmartPlace(Block<?> block, Material material) {
+	protected BlockLogicOreRedstoneMixinSmartPlace(Block<?> block, Material material) {
 		super(block, material);
 	}
 

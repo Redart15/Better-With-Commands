@@ -14,7 +14,7 @@ import redart15.commandly.CommandlyMod;
 import redart15.commandly.veincapitator.VeinMining;
 
 @Mixin(value = ItemToolPickaxe.class, remap = false)
-public class ItemToolPickaxeMixinVeinMining extends ItemTool {
+public abstract class ItemToolPickaxeMixinVeinMining extends ItemTool {
 
 	protected ItemToolPickaxeMixinVeinMining(String name, String namespaceId, int id, int damageDealt, ToolMaterial toolMaterial, Tag<Block<?>> tagEffectiveAgainst) {
 		super(name, namespaceId, id, damageDealt, toolMaterial, tagEffectiveAgainst);
