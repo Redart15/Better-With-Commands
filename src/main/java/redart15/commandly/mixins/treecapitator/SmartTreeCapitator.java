@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import static redart15.commandly.CommandlyMod.MASK;
 
 @Mixin(value = TreecapitatorHelper.class, remap = false)
-public class SmartTreeCapitator {
+public abstract class SmartTreeCapitator {
 
 	@Shadow
 	@Final

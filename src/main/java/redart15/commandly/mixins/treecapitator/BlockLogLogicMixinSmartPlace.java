@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import redart15.commandly.CommandlyConfig;
 
 @Mixin(value = BlockLogicLog.class, remap = false)
-public class BlockLogLogicMixinSmartPlace extends BlockLogicAxisAligned {
-	public BlockLogLogicMixinSmartPlace(Block<?> block, Material material) {
+public abstract class BlockLogLogicMixinSmartPlace extends BlockLogicAxisAligned {
+	protected BlockLogLogicMixinSmartPlace(Block<?> block, Material material) {
 		super(block, material);
 	}
 
