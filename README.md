@@ -17,6 +17,8 @@ For each commands I will provide what version included the command, what argumen
    
 | Commands   | Arguments | Action | Version |
 | :-------- | :-------: | :------- | :-------: |
+| /ascend /up  |player| send player up a level | 1.1.1|
+| /descend /down  |player| send player down a level | 1.1.1|
 | /grow  |none| grows all bonemeable plants in player loading radius| 1.0.0|
 | /protect  |radius/chunk/points| adds blocks to be protects from beeing veinmined or treecapitatored | 1.1.0|
    
