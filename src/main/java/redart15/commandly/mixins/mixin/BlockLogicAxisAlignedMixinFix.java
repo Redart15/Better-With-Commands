@@ -1,5 +1,6 @@
 package redart15.commandly.mixins.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.BlockLogic;
@@ -14,11 +15,9 @@ public abstract class BlockLogicAxisAlignedMixinFix extends BlockLogic {
 		super(block, material);
 	}
 
-//	@WrapMethod(method = "metaToAxis")
-//	private static Axis correctMetaToAxis(int metadata, Operation<Axis> original) {
-//		if (metadata > 2) {
-//			metadata = metadata % 3;
-//		}
-//		return original.call(metadata);
-//	}
+	@WrapMethod(method = "metaToAxis")
+	private static Axis correctMetaToAxis(int metadata, Operation<Axis> original) {
+		int boundedMetadata = metadata & 3;
+		return original.call(boundedMetadata);
+	}
 }
