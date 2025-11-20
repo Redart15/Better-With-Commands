@@ -25,9 +25,9 @@ public class CommandAscend implements CommandManager.CommandRegistry {
 				.then(ArgumentBuilderRequired.argument("player", ArgumentTypeEntity.username())
 					.executes(CommandAscend::ascend)));
 		CommandNode<CommandSource> registeredCommand = dispatcher.register(command);
-//		dispatcher.register((ArgumentBuilderLiteral)((ArgumentBuilderLiteral)ArgumentBuilderLiteral.literal("asc")
-//			.requires((t) -> ((CommandSource) t).hasAdmin())
-//			.redirect((CommandNode<Object>)(CommandNode<?>) registeredCommand)));
+		dispatcher.register((ArgumentBuilderLiteral)((ArgumentBuilderLiteral)ArgumentBuilderLiteral.literal("up")
+			.requires((t) -> ((CommandSource) t).hasAdmin())
+			.redirect((CommandNode<Object>)(CommandNode<?>) registeredCommand)));
 	}
 
 	private static int ascend(CommandContext<Object> context) {
