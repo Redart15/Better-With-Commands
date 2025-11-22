@@ -16,8 +16,8 @@ import turniplabs.halplibe.util.RecipeEntrypoint;
 public class CommandlyMod implements ModInitializer, RecipeEntrypoint, GameStartEntrypoint {
 	public static final String MOD_ID = "commandly";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final int MASK = 7;
-	public static final int MAX_BLOCK_COUNT = 256 * 16 * 16 * 25;
+	private static final int MASK = 7;
+	private static final int MAX_BLOCK_COUNT = 256 * 16 * 16 * 25;
 	public static final GameRuleBoolean MOSS_SPREADING = GameRules.register(new GameRuleBoolean("doMossSpreading", true));
 	public static final GameRuleBoolean GRASS_SPREADING = GameRules.register(new GameRuleBoolean("doGrassSpreading", true));
 	public static final GameRuleBoolean VEINMINING = GameRules.register(new GameRuleBoolean("veinmining", false));
@@ -49,6 +49,9 @@ public class CommandlyMod implements ModInitializer, RecipeEntrypoint, GameStart
 		entrypoint.registerOreGroups(OreGroups.getInstance());
 		entrypoint.registerPickaxe(PickAxeRegister.getInstance());
 	}
+
+	public static int getMask(){return MASK;}
+	public static int getMaxBlockCount(){return MAX_BLOCK_COUNT;}
 
 	@Override
 	public void onRecipesReady() {

@@ -11,7 +11,7 @@ import java.util.Set;
 
 /// Ore -> Group -> List of Group members
 public class OreGroups {
-	protected static final OreGroups instance = new OreGroups();
+	protected static OreGroups instance;
 	protected static final Map<String, HashSet<NamespaceID>> GROUP_TO_BLOCKS = new HashMap<>();
 	protected static final Map<NamespaceID, String> BLOCKS_TO_GROUP = new HashMap<>();
 
@@ -39,7 +39,10 @@ public class OreGroups {
 	}
 
 	public static void init() {
-		// no need
+		if(instance == null){
+			instance = new OreGroups();
+		}
+		instance.load();
 	}
 
 	public static OreGroups getInstance(){
@@ -50,9 +53,7 @@ public class OreGroups {
 		return new OreGroupBuilder(string);
 	}
 
-	protected OreGroups() {
-		this.load();
-	}
+	private OreGroups() {}
 
 	private void load() {
 		OreGroups.register("coal")

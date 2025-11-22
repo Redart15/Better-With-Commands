@@ -23,7 +23,6 @@ import turniplabs.halplibe.helper.EnvironmentHelper;
 import java.util.function.Predicate;
 
 import static redart15.commandly.command.CommandlyCommands.ReturnValues.*;
-import static redart15.commandly.CommandlyMod.MASK;
 
 @SuppressWarnings("ALL") //cause this drives me nuts
 public class CommandProtect implements CommandManager.CommandRegistry {
@@ -98,7 +97,7 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 					Block<?> block = world.getBlock(fx + x, y, fz + z);
 					if (block == null) continue;
 					if (treecapitator.test(block) || veinmining.test(block)) {
-						world.setBlockMetadata(fx + x, y, fz + z, (1 << MASK));
+						world.setBlockMetadata(fx + x, y, fz + z, (1 << CommandlyMod.getMask()));
 						count_protected++;
 					}
 				}
@@ -157,7 +156,7 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 			throw new RuntimeException(e);
 		}
 
-		if ((int) Math.floor(1.25 * Math.PI * Math.pow(radius, 3)) > CommandlyMod.MAX_BLOCK_COUNT) {
+		if ((int) Math.floor(1.25 * Math.PI * Math.pow(radius, 3)) > CommandlyMod.getMaxBlockCount()) {
 			source.sendTranslatableMessage("commadly.protected.tolarge");
 			return code(CANNOT);
 		}
@@ -169,7 +168,7 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 					Block<?> block = world.getBlock(fx + x, fy + y, fz + z);
 					if (block == null) continue;
 					if (treecapitator.test(block) || veinmining.test(block)) {
-						world.setBlockMetadata(fx + x, fy + y, fz + z, (1 << MASK));
+						world.setBlockMetadata(fx + x, fy + y, fz + z, (1 << CommandlyMod.getMask()));
 						count_protected++;
 					}
 				}
@@ -229,7 +228,7 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 		} catch (CommandSyntaxException e) {
 			throw new RuntimeException(e);
 		}
-		if (Math.abs(fx - sx) * Math.abs(fy - sy) * Math.abs(fz - sz) > CommandlyMod.MAX_BLOCK_COUNT) {
+		if (Math.abs(fx - sx) * Math.abs(fy - sy) * Math.abs(fz - sz) > CommandlyMod.getMaxBlockCount()) {
 			source.sendTranslatableMessage("commadly.protected.toolarge");
 			return code(CANNOT);
 		}
@@ -241,7 +240,7 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 					Block<?> block = world.getBlock(x, y, z);
 					if (block == null) continue;
 					if (treecapitator.test(block) || veinmining.test(block)) {
-						world.setBlockMetadata(x, y, z, (1 << MASK));
+						world.setBlockMetadata(x, y, z, (1 << CommandlyMod.getMask()));
 						count_protected++;
 					}
 				}
