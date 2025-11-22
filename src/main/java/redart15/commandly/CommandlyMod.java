@@ -14,9 +14,10 @@ public class CommandlyMod implements ModInitializer, RecipeEntrypoint, GameStart
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final int MASK = 7;
 	public static final int MAX_BLOCK_COUNT = 256 * 16 * 16 * 25;
-	public static GameRuleBoolean MOSS_SPREADING = GameRules.register(new GameRuleBoolean("doMossSpreading", true));
-	public static GameRuleBoolean GRASS_SPREADING = GameRules.register(new GameRuleBoolean("doGrassSpreading", true));
-	public static GameRuleBoolean VEIN_MINING = GameRules.register(new GameRuleBoolean("veinmining", false));
+	public static final GameRuleBoolean MOSS_SPREADING = GameRules.register(new GameRuleBoolean("doMossSpreading", true));
+	public static final GameRuleBoolean GRASS_SPREADING = GameRules.register(new GameRuleBoolean("doGrassSpreading", true));
+	public static final GameRuleBoolean VEIN_MINING = GameRules.register(new GameRuleBoolean("veinmining", false));
+
 	@Override
 	public void onInitialize() {
 		OreGroups.init();
@@ -25,21 +26,21 @@ public class CommandlyMod implements ModInitializer, RecipeEntrypoint, GameStart
 
 	@Override
 	public void beforeGameStart() {
-
+		// no need
 	}
 
 	@Override
 	public void afterGameStart() {
-
+		// no need
 	}
 
 	@Override
 	public void onRecipesReady() {
-
+		// no need
 	}
 
 	@Override
 	public void initNamespaces() {
-
+		// no need
 	}
 }

@@ -1,5 +1,7 @@
 package redart15.commandly.mixins.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.block.BlockLogicMoss;
 import net.minecraft.core.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,10 +13,11 @@ import redart15.commandly.CommandlyMod;
 @Mixin(value = BlockLogicMoss.class, remap = false)
 public abstract class StopMossSpreading {
 
-	@Inject(method = "canMossSpread(Lnet/minecraft/core/world/World;III)Z", at=@At("HEAD"), cancellable = true)
-	public void allowedMossSpread(World world, int x, int y, int z, CallbackInfoReturnable<Boolean> cir){
-		if(!world.isClientSide && !world.getGameRuleValue(CommandlyMod.MOSS_SPREADING)){
-			cir.setReturnValue(false);
+	@ModifyReturnValue(method = "canMossSpread", at = @At("RETURN"))
+	public boolean mossSpread(boolean original, World world){
+		if(Boolean.TRUE.equals(world.getGameRuleValue(CommandlyMod.MOSS_SPREADING))){
+			return original;
 		}
+		return false;
 	}
 }
