@@ -31,11 +31,10 @@ public class VeinMining {
     private final ItemStack tool;
     private final ChunkPosition point;
     private final Player player;
-
-    private Tag<Block<?>> miningTag = BlockTags.MINEABLE_BY_PICKAXE;
+	private Set<Tag<Block<?>>> miningTags = new HashSet<>();
     private int radius;
 
-    private HashSet<NamespaceID> miningGroup;
+    private Set<NamespaceID> miningGroup;
     private boolean onlyThisID = false;
     private ItemList clumpingList;
 	private EnumDropCause dropCause;
@@ -47,7 +46,7 @@ public class VeinMining {
         this.point = new ChunkPosition(x, y, z);
         this.player = player;
         this.radius = 1;
-
+		this.miningTags.add(BlockTags.MINEABLE_BY_PICKAXE);
 		ToolMaterial material = PickAxeRegister.getMaterial(tool.getItem());
 		this.dropCause = material.isSilkTouch() ? EnumDropCause.SILK_TOUCH : EnumDropCause.PROPER_TOOL;
     }
@@ -61,10 +60,13 @@ public class VeinMining {
 		return this;
 	}
 
-    public VeinMining setMiningTag(Tag<Block<?>> mininTag) {
-        this.miningTag = mininTag;
-        return this;
-    }
+	@SafeVarargs
+	public final VeinMining setMiningTags(Tag<Block<?>>... miningTags) {
+		if (miningTags.length > 0) {
+			this.miningTags = new HashSet<>(Arrays.asList(miningTags));
+		}
+		return this;
+	}
 
     public VeinMining setRadius(int radius) {
         this.radius = radius;
@@ -111,9 +113,9 @@ public class VeinMining {
         if (theBlock == null || theBlock.id() != block.id()) {
             return false;
         }
-        if (!block.hasTag(miningTag)) {
-            return false;
-        }
+		if (!this.hasTag(block)) {
+			return false;
+		}
 
         if (this.tool == null) {
             return false;
@@ -127,6 +129,16 @@ public class VeinMining {
 
         return block.hasTag(ORE) || this.languageKeyOre(block);
     }
+
+
+	private boolean hasTag(Block<?> block) {
+		for(Tag<Block<?>> tag : this.miningTags){
+			if(block.hasTag(tag)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static boolean canBeVeinMinedCommand(@NotNull Block<?> block) {
 		return (block.hasTag(ORE) || languageKeyOreCheck(block)) && !(block.getLogic() instanceof IPaintable);
@@ -162,7 +174,7 @@ public class VeinMining {
 		return false;
 	}
 
-    private HashSet<NamespaceID> getGroup(Block<?> block) {
+    private Set<NamespaceID> getGroup(Block<?> block) {
         if (onlyThisID) {
             this.onlyThisID = false;
             HashSet<NamespaceID> set = new HashSet<>();
@@ -238,22 +250,7 @@ public class VeinMining {
 
 	private ItemStack[] getBreakResult(@NotNull Block<?> block, World world, EnumDropCause dropCause, int x, int y, int z, int meta, TileEntity tileEntity) {
         ItemStack[] result = block.getBreakResult(world, dropCause, x, y, z, meta, tileEntity);
-        if (!this.canGetAdditionalBreakResults(block, tool.getItem(), meta)) {
-            return result;
-        }
         return this.getAdditionalBreakResult(world, result, meta, block);
-    }
-
-    private boolean canGetAdditionalBreakResults(Block<?> block, Item tool, int meta) {
-        try {
-            BlockLogic logic = block.getLogic();
-            Method method = logic.getClass().getMethod("canGetAdditionalBreakResult", Item.class, Integer.class);
-            return (Boolean) method.invoke(logic, tool, meta);
-        } catch (NoSuchMethodException e) {
-            return false;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private ItemStack[] getAdditionalBreakResult(World world, ItemStack[] result, int meta, Block<?> block) {

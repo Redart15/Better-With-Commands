@@ -22,7 +22,7 @@ public abstract class ItemToolPickaxeMixinVeinMining extends ItemTool {
 
 	@Override
 	public boolean beforeDestroyBlock(World world, ItemStack itemStack, int blockId, int x, int y, int z, Side side, Player player) {
-		if (!world.isClientSide && world.getGameRuleValue(CommandlyMod.VEIN_MINING) && !player.isSneaking()) {
+		if (!world.isClientSide && world.getGameRuleValue(CommandlyMod.VEINMINING) && !player.isSneaking()) {
 			return !VeinMining.veinMining(world, itemStack, x, y, z, player).mine(blockId, side);
 		}
 		return true;
