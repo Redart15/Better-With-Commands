@@ -148,7 +148,7 @@ public class VeinMining {
 		if(!CommandlyConfig.SMART_VEINMINER){
 			return false;
 		}
-		return block.getLogic() instanceof IPaintable || (metadata >> CommandlyMod.MASK) == 1;
+		return block.getLogic() instanceof IPaintable || (metadata >> CommandlyMod.getMask()) == 1;
 	}
 
 	private boolean languageKeyOre(Block<?> block) {

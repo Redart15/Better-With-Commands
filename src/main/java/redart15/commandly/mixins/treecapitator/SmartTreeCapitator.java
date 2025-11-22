@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import redart15.commandly.CommandlyMod;
 
-import static redart15.commandly.CommandlyMod.MASK;
 
 @Mixin(value = TreecapitatorHelper.class, remap = false)
 public abstract class SmartTreeCapitator {
@@ -30,7 +30,7 @@ public abstract class SmartTreeCapitator {
 		TreecapitatorHelper asThis = (TreecapitatorHelper) (Object) this;
 		ChunkPosition p = asThis.basePosition;
 		int metadata = asThis.world.getBlockMetadata(p.x, p.y, p.z);
-		return block != null && !(block.getLogic() instanceof IPaintable) && (metadata >> MASK) == 0 &&  original.call(instance, block);
+		return block != null && !(block.getLogic() instanceof IPaintable) && (metadata >> CommandlyMod.getMask()) == 0 &&  original.call(instance, block);
 	}
 
 
@@ -52,6 +52,6 @@ public abstract class SmartTreeCapitator {
 
 	@Unique
 	private static boolean isSmartTreecapitator(@NotNull BlockLogic logic, int metadata) {
-		return logic instanceof IPaintable || (metadata >> MASK) == 1;
+		return logic instanceof IPaintable || (metadata >> CommandlyMod.getMask()) == 1;
 	}
 }

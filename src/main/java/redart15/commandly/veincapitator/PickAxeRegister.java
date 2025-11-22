@@ -3,17 +3,25 @@ package redart15.commandly.veincapitator;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.material.ToolMaterial;
 import net.minecraft.core.item.tool.ItemTool;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PickAxeRegister {
-	protected static final PickAxeRegister instance = new PickAxeRegister();
+	protected static PickAxeRegister instance;
 	protected static final Map<Integer, ToolMaterial> toolSet = new HashMap<>();
 
 	public static void init() {
-		// loads the class
+		if (instance == null) {
+			instance = new PickAxeRegister();
+		}
+		instance.load();
+	}
+
+	private void load() {
+		// nothign to load
 	}
 
 	protected PickAxeRegister() {
@@ -27,18 +35,24 @@ public class PickAxeRegister {
 		return toolSet.containsKey(id);
 	}
 
-	public static boolean register(ItemTool pickaxe) {
-		if (pickaxe == null) {
-			return false;
+	public static boolean register(@NotNull Item pickaxe) {
+		if (pickaxe instanceof ItemTool) {
+			toolSet.put(pickaxe.id, ((ItemTool) pickaxe).getMaterial());
 		}
-		toolSet.put(pickaxe.id, pickaxe.getMaterial());
+		try {
+			Method method = pickaxe.getClass().getMethod("getMaterial");
+			ToolMaterial toolMaterial = (ToolMaterial) method.invoke(pickaxe);
+			toolSet.put(pickaxe.id, toolMaterial);
+			return true;
+		} catch (NoSuchMethodException e) {
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 
-	public static boolean register(Item pickaxe, ToolMaterial material) {
-		if (pickaxe == null || material == null) {
-			return false;
-		}
+	public static boolean register(@NotNull Item pickaxe, @NotNull ToolMaterial material) {
 		toolSet.put(pickaxe.id, material);
 		return true;
 	}
