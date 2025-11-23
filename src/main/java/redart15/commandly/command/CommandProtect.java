@@ -7,6 +7,7 @@ import com.mojang.brigadier.builder.ArgumentBuilderRequired;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.block.Block;
+import net.minecraft.core.block.Blocks;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.net.command.CommandManager;
 import net.minecraft.core.net.command.CommandSource;
@@ -97,7 +98,8 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 					Block<?> block = world.getBlock(fx + x, y, fz + z);
 					if (block == null) continue;
 					if (treecapitator.test(block) || veinmining.test(block)) {
-						world.setBlockMetadata(fx + x, y, fz + z, (1 << CommandlyMod.getMask()));
+						int metadata = world.getBlockMetadata(fx + x, y, fz + z);
+						world.setBlockMetadata(fx + x, y, fz + z, (1 << CommandlyMod.getMask()) | metadata);
 						count_protected++;
 					}
 				}
@@ -157,7 +159,7 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 		}
 
 		if ((int) Math.floor(1.25 * Math.PI * Math.pow(radius, 3)) > CommandlyMod.getMaxBlockCount()) {
-			source.sendTranslatableMessage("commadly.protected.tolarge");
+			source.sendTranslatableMessage("commadly.protected.toolarge");
 			return code(CANNOT);
 		}
 		int count_protected = 0;
@@ -168,7 +170,8 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 					Block<?> block = world.getBlock(fx + x, fy + y, fz + z);
 					if (block == null) continue;
 					if (treecapitator.test(block) || veinmining.test(block)) {
-						world.setBlockMetadata(fx + x, fy + y, fz + z, (1 << CommandlyMod.getMask()));
+						int metadata = world.getBlockMetadata(fx + x, y, fz + z);
+						world.setBlockMetadata(fx + x, y, fz + z, (1 << CommandlyMod.getMask()) | metadata);
 						count_protected++;
 					}
 				}
@@ -240,7 +243,8 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 					Block<?> block = world.getBlock(x, y, z);
 					if (block == null) continue;
 					if (treecapitator.test(block) || veinmining.test(block)) {
-						world.setBlockMetadata(x, y, z, (1 << CommandlyMod.getMask()));
+						int metadata = world.getBlockMetadata(fx + x, y, fz + z);
+						world.setBlockMetadata(fx + x, y, fz + z, (1 << CommandlyMod.getMask()) | metadata);
 						count_protected++;
 					}
 				}
