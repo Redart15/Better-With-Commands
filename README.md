@@ -6,6 +6,9 @@
 Single Player Command was my very first mod I have ever installed in Minecraft. While most of the commands have made to modern Minecraft some have not.
 This mods aim to port some if not most of the missing feature as well as new ones from Single Player Commands to Better than Adventure.
 
+## Important
+This from release 1.1.3 all new commandly version are using a newer BTA Babric version. 
+
 ## Screenshots
 Currently none
 
