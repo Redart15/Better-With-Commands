@@ -3,6 +3,7 @@ package redart15.commandly;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.core.data.gamerule.GameRuleBoolean;
 import net.minecraft.core.data.gamerule.GameRules;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ public class CommandlyMod implements ModInitializer, RecipeEntrypoint, GameStart
 	public static final GameRuleBoolean MOSS_SPREADING = GameRules.register(new GameRuleBoolean("doMossSpreading", true));
 	public static final GameRuleBoolean GRASS_SPREADING = GameRules.register(new GameRuleBoolean("doGrassSpreading", true));
 	public static final GameRuleBoolean VEINMINING = GameRules.register(new GameRuleBoolean("veinmining", false));
+	public static final String loaderVersion = FabricLoaderImpl.VERSION;
 
 	@Override
 	public void onInitialize() {

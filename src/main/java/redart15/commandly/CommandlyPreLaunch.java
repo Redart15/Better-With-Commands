@@ -11,6 +11,10 @@ public class CommandlyPreLaunch implements PreLaunchEntrypoint {
 	public void onPreLaunch() {
 		CommandlyConfig.init();
 		// need to be present before any mixins are done
+		if(!CommandlyMod.loaderVersion.equalsIgnoreCase("0.17.3-bta.8")){
+			Mixins.addConfiguration("addon/oldfabric.mixin.json");
+			LOGGER.info("Smart veinminer loaded.");
+		}
 		if(CommandlyConfig.SMART_VEINMINER){
 			Mixins.addConfiguration("addon/veinminer.mixin.json");
 			LOGGER.info("Smart veinminer loaded.");
