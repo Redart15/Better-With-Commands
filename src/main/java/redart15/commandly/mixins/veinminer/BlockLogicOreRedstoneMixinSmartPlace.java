@@ -10,6 +10,8 @@ import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePosc;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,26 +22,25 @@ import static redart15.commandly.CommandlyConfig.SMART_VALUE;
 public abstract class BlockLogicOreRedstoneMixinSmartPlace extends BlockLogic {
 
 
-	protected BlockLogicOreRedstoneMixinSmartPlace(Block<?> block, Material material) {
+	private BlockLogicOreRedstoneMixinSmartPlace(Block<?> block, Material material) {
 		super(block, material);
 	}
 
 	@Override
-	public int getPlacedBlockMetadata(@Nullable Player player, ItemStack stack, World world, int x, int y, int z, Side side, double xPlaced, double yPlaced) {
+	public int getPlacedData(@Nullable Player player, @NotNull ItemStack itemStack, @NotNull World world, @NotNull TilePosc tilePos, @NotNull Side side, double xHit, double yHit) {
 		return SMART_VALUE;
 	}
 
-	@WrapOperation(method = "lightRedstone", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockWithNotify(IIII)Z"))
-	public boolean setLightRedstoneMetadata(World instance, int x, int y, int z, int id, Operation<Boolean> original) {
-		int meta = instance.getBlockMetadata(x, y, z);
-		return instance.setBlockAndMetadataWithNotify(x, y, z, id, meta);
+	@WrapOperation(method = "lightRedstone", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockTypeNotify(Lnet/minecraft/core/world/pos/TilePosc;Lnet/minecraft/core/block/Block;)Z"))
+	public boolean setLightRedstoneMetadata(World instance, @NotNull TilePosc tilePosc, @NotNull Block<?> block, Operation<Boolean> original) {
+		int meta = instance.getBlockData(tilePosc);
+		return instance.setBlockTypeDataNotify(tilePosc, block, meta);
 	}
 
 
-	@WrapOperation(method = "updateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockWithNotify(IIII)Z"))
-	public boolean updateRedstoneMetadata(World instance, int x, int y, int z, int id, Operation<Boolean> original) {
-		int meta = instance.getBlockMetadata(x, y, z);
-		return instance.setBlockAndMetadataWithNotify(x, y, z, id, meta);
+	@WrapOperation(method = "updateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockTypeNotify(Lnet/minecraft/core/world/pos/TilePosc;Lnet/minecraft/core/block/Block;)Z"))
+	public boolean updateRedstoneMetadata(World instance, @NotNull TilePosc tilePosc, @NotNull Block<?> block, Operation<Boolean> original) {
+		return this.setLightRedstoneMetadata(instance, tilePosc, block, original);
 	}
 
 }

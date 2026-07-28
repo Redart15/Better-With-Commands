@@ -1,4 +1,4 @@
-package redart15.commandly.command.cend;
+package redart15.commandly.command;
 
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.core.block.material.MaterialDecoration;

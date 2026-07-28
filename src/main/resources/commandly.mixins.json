@@ -1,17 +1,15 @@
 {
   "required": true,
-  "minVersion": "0.8",
   "package": "redart15.commandly.mixins.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_${java}",
+  "injectors": {
+    "defaultRequire": 1
+  },
   "mixins": [
     "BlockLogicAxisAlignedMixinFix",
     "ItemToolPickaxeMixinVeinMining",
     "StopGrassSpreadingMixin",
     "StopMossSpreading"
   ],
-  "client": [
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+  "client": []
 }

@@ -11,32 +11,26 @@ import org.slf4j.LoggerFactory;
 import redart15.commandly.api.CommandlyPlugin;
 import redart15.commandly.veincapitator.OreGroups;
 import redart15.commandly.veincapitator.PickAxeRegister;
-import turniplabs.halplibe.util.GameStartEntrypoint;
-import turniplabs.halplibe.util.RecipeEntrypoint;
+import turniplabs.halplibe.HalpLibe;
+import turniplabs.halplibe.event.defs.CommonEvents;
+import turniplabs.halplibe.util.dependency.Key;
 
-public class CommandlyMod implements ModInitializer, RecipeEntrypoint, GameStartEntrypoint {
-	public static final String MOD_ID = "commandly";
+public class CommandlyMod implements ModInitializer{
+	public static final String MOD_ID = HalpLibe.registerMod("commandly");
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	private static final int MASK = 7;
 	private static final int MAX_BLOCK_COUNT = 256 * 16 * 16 * 25;
-	public static final GameRuleBoolean MOSS_SPREADING = GameRules.register(new GameRuleBoolean("doMossSpreading", true));
-	public static final GameRuleBoolean GRASS_SPREADING = GameRules.register(new GameRuleBoolean("doGrassSpreading", true));
-	public static final GameRuleBoolean VEINMINING = GameRules.register(new GameRuleBoolean("veinmining", false));
-	public static final String loaderVersion = FabricLoaderImpl.VERSION;
+	public static final GameRuleBoolean MOSS_SPREADING = GameRules.register(new GameRuleBoolean("doMossSpreading", "gamerule.do_moss_spread", true));
+	public static final GameRuleBoolean GRASS_SPREADING = GameRules.register(new GameRuleBoolean("doGrassSpreading", "gamerule.do_grass_spread", true));
+	public static final GameRuleBoolean VEINMINING = GameRules.register(new GameRuleBoolean("veinmining", "gamerule.veinmining", false));
 
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Commandly initialized");
-		// no need
+		CommonEvents.AFTER_GAME_START.listen(Key.of(MOD_ID), CommandlyMod::afterGameStart);
 	}
 
-	@Override
-	public void beforeGameStart() {
-		// no need
-	}
-
-	@Override
-	public void afterGameStart() {
+	public static void afterGameStart() {
 		LOGGER.info("Loading implementation");
 		OreGroups.init();
 		PickAxeRegister.init();
@@ -54,14 +48,4 @@ public class CommandlyMod implements ModInitializer, RecipeEntrypoint, GameStart
 
 	public static int getMask(){return MASK;}
 	public static int getMaxBlockCount(){return MAX_BLOCK_COUNT;}
-
-	@Override
-	public void onRecipesReady() {
-		// no need
-	}
-
-	@Override
-	public void initNamespaces() {
-		// no need
-	}
 }

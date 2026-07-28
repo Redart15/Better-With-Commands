@@ -3,8 +3,6 @@ package redart15.commandly.command;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.net.command.CommandManager;
-import redart15.commandly.command.cend.CommandAscend;
-import redart15.commandly.command.cend.CommandDescend;
 
 public class CommandlyCommands {
 

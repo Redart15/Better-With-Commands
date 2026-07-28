@@ -7,10 +7,11 @@ import net.minecraft.core.data.tag.Tag;
 import java.lang.reflect.Field;
 
 import static net.minecraft.core.block.tag.BlockTags.TAG_LIST;
-import static org.apache.log4j.builders.appender.SocketAppenderBuilder.LOGGER;
+import static redart15.commandly.CommandlyMod.LOGGER;
 
 public class OreTags {
 	public static Tag<Block<?>> ORE = Tag.of("ore");
+	private OreTags(){}
 
 	public static void init(){}
 

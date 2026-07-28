@@ -14,7 +14,8 @@ import net.minecraft.core.net.command.CommandSource;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.chunk.*;
-import redart15.commandly.util.Point;
+import net.minecraft.core.world.pos.ChunkPos;
+import net.minecraft.core.world.pos.TilePos;
 
 import java.util.*;
 
@@ -35,42 +36,37 @@ public class CommandGrow implements CommandManager.CommandRegistry {
 		Player player = source.getSender();
 		World world = source.getWorld();
 		Set<ChunkCoordinate> loaded = CommandGrow.getLoadedChunks(world, player.chunkCoordX, player.chunkCoordY, player.chunkCoordZ);
-		List<Point> bonemealTargets = getAllBonemeableBlocks(world, loaded);
+		List<TilePos> bonemealTargets = getAllBonemeableBlocks(world, loaded);
 		source.sendTranslatableMessage("commandly.command.grow", new Object[]{grow(world, bonemealTargets)});
 		return 1;
 	}
 
-	public int grow(World world, List<Point> targets){
-		Random rand = new Random();
+	public int grow(World world, List<TilePos> targets) {
 		int count = 0;
-		for(Point p : targets){
-			int x = p.getIntX();
-			int y = p.getIntY();
-			int z = p.getIntZ();
-			Block<?> block = world.getBlock(x,y,z);
-			if(block == null) continue;
+		for (TilePos tilePos : targets) {
+			Block<?> block = world.getBlockType(tilePos);
 			BlockLogic logic = block.getLogic();
 			if (block.getLogic() instanceof IBonemealable) {
-				((IBonemealable)logic).onBonemealUsed(new ItemStack(Items.DYE), (Player) null, world, x,y,z, Side.TOP, 0,0);
+				((IBonemealable) logic).onBonemealUsed(new ItemStack(Items.DYE), (Player) null, world, tilePos, Side.TOP, 0, 0);
 				count++;
 			}
 		}
 		return count;
 	}
 
-	public List<Point> getAllBonemeableBlocks(World world,Set<ChunkCoordinate> loaded) {
-		List<Point> bonemeableBlocks = new ArrayList<Point>();
-		for(ChunkCoordinate coords: loaded){
+	public List<TilePos> getAllBonemeableBlocks(World world, Set<ChunkCoordinate> loaded) {
+		List<TilePos> bonemeableBlocks = new ArrayList<>();
+		for (ChunkCoordinate coords : loaded) {
 			bonemeableBlocks.addAll(getBonemeableBlocks(world, coords));
-			if(bonemeableBlocks.size() >= 2 << 16){
+			if (bonemeableBlocks.size() >= 2 << 16) {
 				break;
 			}
 		}
 		return bonemeableBlocks;
 	}
 
-	public List<Point> getBonemeableBlocks(World world,ChunkCoordinate chunkCoordinate) {
-		List<Point> bonemealableBlock = new ArrayList<Point>();
+	public List<TilePos> getBonemeableBlocks(World world, ChunkCoordinate chunkCoordinate) {
+		List<TilePos> bonemealableBlock = new ArrayList<>();
 		int ix = chunkCoordinate.x * 16;
 		int iz = chunkCoordinate.z * 16;
 		for (int y = 0; y <= worldHeight; y++) {
@@ -78,11 +74,11 @@ public class CommandGrow implements CommandManager.CommandRegistry {
 				for (int z = 0; z < 16; z++) {
 					int curX = ix + x;
 					int curZ = iz + z;
-					Block<?> block = world.getBlock(curX, y, curZ);
-					if (block == null) continue;
+					TilePos tilePos = new TilePos(curX, y, curZ);
+					Block<?> block = world.getBlockType(tilePos);
 					if (block.id() == 0) continue;
 					if (block.getLogic() instanceof IBonemealable) {
-						bonemealableBlock.add(new Point(curX, y, curZ));
+						bonemealableBlock.add(tilePos);
 					}
 				}
 			}
@@ -90,13 +86,13 @@ public class CommandGrow implements CommandManager.CommandRegistry {
 		return bonemealableBlock;
 	}
 
-	public static Set<ChunkCoordinate> getLoadedChunks(World world,int playerChunkX, int playerChunkY, int playerChunkZ) {
-		Set<ChunkCoordinate> loadedChunks = new HashSet<ChunkCoordinate>();
+	public static Set<ChunkCoordinate> getLoadedChunks(World world, int playerChunkX, int playerChunkY, int playerChunkZ) {
+		Set<ChunkCoordinate> loadedChunks = new HashSet<>();
 		for (int x = -radius; x <= radius; ++x) {
 			for (int z = -radius; z <= radius; ++z) {
 				int chunkCoordX = x + playerChunkX;
 				int chunkCoordZ = z + playerChunkZ;
-				if (world.isChunkLoaded(chunkCoordX, chunkCoordZ)) {
+				if (world.isChunkLoaded(new ChunkPos(chunkCoordX, chunkCoordZ))) {
 					loadedChunks.add(new ChunkCoordinate(chunkCoordX, chunkCoordZ));
 				}
 			}

@@ -7,6 +7,7 @@ import net.minecraft.core.block.material.Material;
 import net.minecraft.core.entity.Mob;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePosc;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import redart15.commandly.CommandlyConfig;
@@ -18,18 +19,16 @@ public abstract class BlockLogLogicMixinSmartPlace extends BlockLogicAxisAligned
 	}
 
 	@Override
-	public void onBlockPlacedByMob(World world, int x, int y, int z, @NotNull Side side, Mob mob, double xPlaced, double yPlaced) {
-		super.onBlockPlacedByMob(world, x, y, z, side, mob, xPlaced, yPlaced);
-		int metadata = world.getBlockMetadata(x,y,z);
-		world.setBlockMetadata(x,y,z, metadata | CommandlyConfig.SMART_VALUE);
+	public void onPlacedByMob(@NotNull World world, @NotNull TilePosc tilePos, @NotNull Side side, @NotNull Mob mob, double xHit, double yHit) {
+		super.onPlacedByMob(world, tilePos, side, mob, xHit, yHit);
+		int metadata = world.getBlockData(tilePos);
+		world.setBlockData(tilePos, metadata | CommandlyConfig.SMART_VALUE);
 	}
 
 	@Override
-	public void onBlockPlacedOnSide(World world, int x, int y, int z, @NotNull Side side, double xPlaced, double yPlaced) {
-		super.onBlockPlacedOnSide(world, x, y, z, side, xPlaced, yPlaced);
-		int metadata = world.getBlockMetadata(x,y,z);
-		world.setBlockMetadata(x,y,z, metadata | CommandlyConfig.SMART_VALUE);
+	public void onPlacedOnSide(@NotNull World world, @NotNull TilePosc tilePos, @NotNull Side side, double xHit, double yHit) {
+		super.onPlacedOnSide(world, tilePos, side, xHit, yHit);
+		int metadata = world.getBlockData(tilePos);
+		world.setBlockData(tilePos, metadata | CommandlyConfig.SMART_VALUE);
 	}
-
-
 }

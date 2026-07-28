@@ -9,6 +9,8 @@ import net.minecraft.core.item.tool.ItemTool;
 import net.minecraft.core.item.tool.ItemToolPickaxe;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePosc;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import redart15.commandly.CommandlyMod;
 import redart15.commandly.veincapitator.VeinMining;
@@ -20,11 +22,13 @@ public abstract class ItemToolPickaxeMixinVeinMining extends ItemTool {
 		super(name, namespaceId, id, damageDealt, toolMaterial, tagEffectiveAgainst);
 	}
 
+
 	@Override
-	public boolean beforeDestroyBlock(World world, ItemStack itemStack, int blockId, int x, int y, int z, Side side, Player player) {
+	public boolean beforeBlockDestroyed(@NotNull ItemStack selfStack, @NotNull World world, @NotNull Player player, @NotNull Block<?> block, @NotNull TilePosc blockPos, @NotNull Side side) {
 		if (!world.isClientSide && world.getGameRuleValue(CommandlyMod.VEINMINING) && !player.isSneaking()) {
-			return !VeinMining.veinMining(world, itemStack, x, y, z, player).mine(blockId, side);
+			return !VeinMining.veinMining(world, selfStack, blockPos, player).mine(block, side);
 		}
 		return true;
+
 	}
 }

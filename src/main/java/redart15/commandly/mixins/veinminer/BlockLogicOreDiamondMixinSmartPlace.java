@@ -8,6 +8,8 @@ import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.pos.TilePosc;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -16,12 +18,12 @@ import static redart15.commandly.CommandlyConfig.SMART_VALUE;
 @Mixin(value = BlockLogicOreDiamond.class, remap = false)
 public abstract class BlockLogicOreDiamondMixinSmartPlace extends BlockLogic {
 
-	public BlockLogicOreDiamondMixinSmartPlace(Block<?> block, Material material) {
+	private BlockLogicOreDiamondMixinSmartPlace(Block<?> block, Material material) {
 		super(block, material);
 	}
 
 	@Override
-	public int getPlacedBlockMetadata(@Nullable Player player, ItemStack stack, World world, int x, int y, int z, Side side, double xPlaced, double yPlaced) {
+	public int getPlacedData(@Nullable Player player, @NotNull ItemStack itemStack, @NotNull World world, @NotNull TilePosc tilePos, @NotNull Side side, double xHit, double yHit) {
 		return SMART_VALUE;
 	}
 }

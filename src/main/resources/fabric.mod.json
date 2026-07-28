@@ -5,26 +5,21 @@
   "name": "Commandly",
   "description": "This mod is a port of Single Player Commands",
   "authors": [
-    "Redart15",
-		"The Midford"
+    "Redart15"
   ],
+	"contributors": [
+		"The Midford"
+	],
   "contact": {
     "homepage": "",
     "sources": "https://github.com/Redart15/Commandly"
   },
-
 	"icon": "icon.png",
   "license": "CC0-1.0",
-
   "environment": "*",
   "entrypoints": {
     "main": ["redart15.commandly.CommandlyMod"],
-		"beforeGameStart": ["redart15.commandly.CommandlyMod"],
-		"afterGameStart": ["redart15.commandly.CommandlyMod"],
-		"recipesReady": ["redart15.commandly.CommandlyMod"],
 		"client": ["redart15.commandly.CommandlyClient"],
-		"beforeClientStart": ["redart15.commandly.CommandlyClient"],
-		"afterClientStart": ["redart15.commandly.CommandlyClient"],
 		"server": ["redart15.commandly.CommandlyServer"],
 		"preLaunch": ["redart15.commandly.CommandlyPreLaunch"]
 	},

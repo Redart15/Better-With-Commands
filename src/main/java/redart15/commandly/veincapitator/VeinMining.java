@@ -14,7 +14,8 @@ import net.minecraft.core.item.tool.ItemToolPickaxe;
 import net.minecraft.core.util.collection.NamespaceID;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
-import net.minecraft.core.world.chunk.ChunkPosition;
+import net.minecraft.core.world.pos.TilePos;
+import net.minecraft.core.world.pos.TilePosc;
 import org.jetbrains.annotations.NotNull;
 import redart15.commandly.CommandlyConfig;
 import redart15.commandly.CommandlyMod;
@@ -30,7 +31,7 @@ public class VeinMining {
 	private static final int MAX_VEIN_SIZE = 64;
 	private final World world;
 	private final ItemStack tool;
-	private final ChunkPosition point;
+	private final TilePosc point;
 	private final Player player;
 	private Set<Tag<Block<?>>> miningTags = new HashSet<>();
 	private int radius;
@@ -41,10 +42,10 @@ public class VeinMining {
 	private EnumDropCause dropCause;
 
 
-	public VeinMining(World world, ItemStack itemStack, int x, int y, int z, Player player) {
+	public VeinMining(World world, ItemStack itemStack, TilePosc tilePos, Player player) {
 		this.world = world;
 		this.tool = itemStack;
-		this.point = new ChunkPosition(x, y, z);
+		this.point = tilePos;
 		this.player = player;
 		this.radius = 1;
 		this.miningTags.add(BlockTags.MINEABLE_BY_PICKAXE);
@@ -52,8 +53,8 @@ public class VeinMining {
 		this.dropCause = material.isSilkTouch() ? EnumDropCause.SILK_TOUCH : EnumDropCause.PROPER_TOOL;
 	}
 
-	public static VeinMining veinMining(World world, ItemStack itemStack, int x, int y, int z, Player player) {
-		return new VeinMining(world, itemStack, x, y, z, player);
+	public static VeinMining veinMining(World world, ItemStack itemStack, TilePosc tilePos, Player player) {
+		return new VeinMining(world, itemStack, tilePos, player);
 	}
 
 	public VeinMining setDropCause(EnumDropCause dropCause) {
@@ -74,9 +75,8 @@ public class VeinMining {
 		return this;
 	}
 
-	public boolean mine(int blockId, Side side) {
-		Block<?> block = Blocks.getBlock(blockId);
-		if (block == null || !this.canBeVeinMined(block)) {
+	public boolean mine(Block<?> block, Side side) {
+		if (!this.canBeVeinMined(block)) {
 			return false;
 		}
 		this.miningGroup = this.getGroup(block);
@@ -88,12 +88,12 @@ public class VeinMining {
 			veinSize = Math.min(durabilityLeft, MAX_VEIN_SIZE);
 		}
 
-		Set<ChunkPosition> toBeMined = this.findAllOreBlocks(veinSize);
+		Set<TilePosc> toBeMined = this.findAllOreBlocks(veinSize);
 		if (EntityItem.enableItemClumping) {
 			this.clumpingList = new ItemList(world, point);
 		}
 
-		for (ChunkPosition pos : toBeMined) {
+		for (TilePosc pos : toBeMined) {
 			if (!this.breakBlock(pos)) continue;
 			if (itemStackDamageable) {
 				tool.damageItem(1, player);
@@ -110,8 +110,8 @@ public class VeinMining {
 	}
 
 	private boolean canBeVeinMined(Block<?> block) {
-		Block<?> theBlock = world.getBlock(point.x, point.y, point.z);
-		if (theBlock == null || theBlock.id() != block.id()) {
+		Block<?> theBlock = world.getBlockType(point);
+		if (theBlock.id() != block.id()) {
 			return false;
 		}
 		if (!this.hasTag(block)) {
@@ -153,8 +153,8 @@ public class VeinMining {
 	}
 
 	private boolean languageKeyOre(Block<?> block) {
-		String language_key = block.getLanguageKey(0);
-		String[] substrings = language_key.split("\\.");
+		String languageKey = block.getLanguageKey(0);
+		String[] substrings = languageKey.split("\\.");
 		for (String str : substrings) {
 			if (str.equalsIgnoreCase("ore")) {
 				this.onlyThisID = true;
@@ -165,8 +165,8 @@ public class VeinMining {
 	}
 
 	private static boolean languageKeyOreCheck(Block<?> block) {
-		String language_key = block.getLanguageKey(0);
-		String[] substrings = language_key.split("\\.");
+		String languageKey = block.getLanguageKey(0);
+		String[] substrings = languageKey.split("\\.");
 		for (String str : substrings) {
 			if (str.equalsIgnoreCase("ore")) {
 				return true;
@@ -185,24 +185,24 @@ public class VeinMining {
 		return OreGroups.instance.getOreGroupFromMember(block);
 	}
 
-	private Set<ChunkPosition> findAllOreBlocks(int veinSize) {
-		Queue<ChunkPosition> queue = new ArrayDeque<>();
-		Set<ChunkPosition> visited = new LinkedHashSet<>();
+	private Set<TilePosc> findAllOreBlocks(int veinSize) {
+		Queue<TilePosc> queue = new ArrayDeque<>();
+		Set<TilePosc> visited = new LinkedHashSet<>();
 
 		queue.add(this.point);
 		visited.add(this.point);
 
 		while (!queue.isEmpty() && veinSize > 0) {
-			ChunkPosition from = queue.poll();
+			TilePosc from = queue.poll();
 			for (int offX = -radius; offX <= radius; offX++) {
 				for (int offY = -radius; offY <= radius; offY++) {
 					for (int offZ = -radius; offZ <= radius; offZ++) {
 						if ((offX == 0 && offZ == 0 && offY == 0)) continue;
-						ChunkPosition to = new ChunkPosition(from.x + offX, from.y + offY, from.z + offZ);
+						TilePos to = new TilePos(from.x() + offX, from.y() + offY, from.z() + offZ);
 						if (visited.contains(to)) continue;
-						Block<?> nextBlock = this.world.getBlock(to.x, to.y, to.z);
-						if (nextBlock == null || !this.miningGroup.contains(nextBlock.namespaceId())) continue;
-						if (isSmartMiner(nextBlock, world.getBlockMetadata(to.x, to.y, to.z))) continue;
+						Block<?> nextBlock = this.world.getBlockType(to);
+						if (!this.miningGroup.contains(nextBlock.namespaceId())) continue;
+						if (isSmartMiner(nextBlock, world.getBlockData(to))) continue;
 						visited.add(to);
 						queue.add(to);
 						veinSize--;
@@ -216,30 +216,27 @@ public class VeinMining {
 		return visited;
 	}
 
-	private boolean breakBlock(ChunkPosition pos) {
-		Block<?> block = this.world.getBlock(pos.x, pos.y, pos.z);
-		int meta = this.world.getBlockMetadata(pos.x, pos.y, pos.z);
-		if (block == null) {
+	private boolean breakBlock(TilePosc pos) {
+		Block<?> block = this.world.getBlockType(pos);
+		int meta = this.world.getBlockData(pos);
+		if (!this.world.setBlockData(pos, 0)) {
 			return false;
 		}
-		if (!this.world.setBlockWithNotify(pos.x, pos.y, pos.z, 0)) {
-			return false;
-		}
-		if (player.getGamemode().dropBlockOnBreak()) {
+		if (player.getGamemode().hasInvulnerablePlayer()) {
 			if (EntityItem.enableItemClumping) {
-				ItemStack[] drops = this.getBreakResult(block, this.world, dropCause, pos.x, pos.y, pos.z, meta, (TileEntity) null);
+				ItemStack[] drops = this.getBreakResult(block, this.world, dropCause, pos, meta, null);
 				this.clumpingList.addAllItems(drops);
 			} else {
-				block.dropBlockWithCause(world, this.dropCause, pos.x, pos.y, pos.z, meta, (TileEntity) null, this.player);
+				block.dropWithCause(world, this.dropCause, pos, meta, null, this.player);
 			}
 			player.addStat(block.getStat("stat_mined"), 1);
 		}
-		this.world.playBlockEvent(this.player, EVENT_BLOCK_BREAK, pos.x, pos.y, pos.z, block.id());
+		this.world.playBlockEvent(this.player, pos, EVENT_BLOCK_BREAK, block.id());
 		return true;
 	}
 
-	private ItemStack[] getBreakResult(@NotNull Block<?> block, World world, EnumDropCause dropCause, int x, int y, int z, int meta, TileEntity tileEntity) {
-		ItemStack[] result = block.getBreakResult(world, dropCause, x, y, z, meta, tileEntity);
+	private ItemStack[] getBreakResult(@NotNull Block<?> block, World world, EnumDropCause dropCause, TilePosc tilePos, int meta, TileEntity tileEntity) {
+		ItemStack[] result = block.getBreakResult(world, dropCause, tilePos, meta, tileEntity);
 		return this.getAdditionalBreakResult(world, result, meta, block);
 	}
 
@@ -257,10 +254,10 @@ public class VeinMining {
 
 	public class ItemList {
 		private final World world;
-		private final ChunkPosition point;
+		private final TilePosc point;
 		private final Map<ItemStack, Integer> itemList = new HashMap<>();
 
-		public ItemList(World world, ChunkPosition point) {
+		public ItemList(World world, TilePosc point) {
 			this.world = world;
 			this.point = point;
 		}
@@ -270,7 +267,7 @@ public class VeinMining {
 				ItemStack itemStack = entry.getKey();
 				int count = entry.getValue();
 				while (entry.getKey().stackSize > 0) {
-					world.dropItem(point.x, point.y, point.z, itemStack.splitStack(Math.min(count, itemStack.getMaxStackSize())));
+					world.dropItem(point, itemStack.splitStack(Math.min(count, itemStack.getMaxStackSize())));
 				}
 			}
 		}

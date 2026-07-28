@@ -1,4 +1,4 @@
-package redart15.commandly.command.cend;
+package redart15.commandly.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilderLiteral;
@@ -13,29 +13,28 @@ import net.minecraft.core.world.chunk.ChunkCoordinates;
 import static redart15.commandly.command.CommandlyCommands.ReturnValues.*;
 
 @SuppressWarnings("ALL") //cause this drives me nuts
-public class CommandDescend implements CommandManager.CommandRegistry {
+public class CommandAscend implements CommandManager.CommandRegistry {
 
 	@Override
 	public void register(CommandDispatcher<CommandSource> dispatcher) {
-		dispatcher.register((ArgumentBuilderLiteral) ((ArgumentBuilderLiteral) ArgumentBuilderLiteral.literal("descend")
+		dispatcher.register((ArgumentBuilderLiteral) ((ArgumentBuilderLiteral) ArgumentBuilderLiteral.literal("ascend")
 				.requires((t) -> ((CommandSource) t).hasAdmin())
-				.executes(ctx -> CendUtil.cend(ctx, CommandDescend::descend))
+				.executes(ctx -> CendUtil.cend(ctx, CommandAscend::ascend))
 				.then(ArgumentBuilderRequired.argument("player", ArgumentTypeEntity.username())
-					.executes(ctx -> CendUtil.cend(ctx, CommandDescend::descend)))));
+					.executes(ctx -> CendUtil.cend(ctx, CommandAscend::ascend)))));
 	}
 
-	private static int descend(CommandSource source, Player player) {
+	private static int ascend(CommandSource source, Player player) {
 		World world = player.world;
-		for (double y = player.y - player.bbHeight; y > 0; y--) {
+		for (double y = player.y; y <= world.getHeightBlocks(); y++) {
 			ChunkCoordinates telePos = CendUtil.canPlacePlayer(world, player.x, y, player.z);
 			if (telePos != null) {
 				source.teleportPlayerToPos(player, telePos.x, telePos.y + 1.0f, telePos.z);
-				source.sendTranslatableMessage("commandly.descend.down");
+				source.sendTranslatableMessage("commandly.ascend.up");
 				return code(OK);
 			}
 		}
-		source.sendTranslatableMessage("commandly.descend.fail");
+		source.sendTranslatableMessage("commandly.ascend.fail");
 		return code(FAIL);
 	}
-
 }
