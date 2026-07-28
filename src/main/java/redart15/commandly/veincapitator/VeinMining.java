@@ -222,7 +222,7 @@ public class VeinMining {
 		if (!this.world.setBlockData(pos, 0)) {
 			return false;
 		}
-		if (player.getGamemode().hasInvulnerablePlayer()) {
+		if (player.getGamemode().hasBlockConsumption()) {
 			if (EntityItem.enableItemClumping) {
 				ItemStack[] drops = this.getBreakResult(block, this.world, dropCause, pos, meta, null);
 				this.clumpingList.addAllItems(drops);
@@ -231,6 +231,7 @@ public class VeinMining {
 			}
 			player.addStat(block.getStat("stat_mined"), 1);
 		}
+		this.world.setBlockTypeNotify(pos, Blocks.AIR);
 		this.world.playBlockEvent(this.player, pos, EVENT_BLOCK_BREAK, block.id());
 		return true;
 	}

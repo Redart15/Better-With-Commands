@@ -3,7 +3,6 @@ package redart15.commandly;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
-import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.core.data.gamerule.GameRuleBoolean;
 import net.minecraft.core.data.gamerule.GameRules;
 import org.slf4j.Logger;
@@ -37,7 +36,6 @@ public class CommandlyMod implements ModInitializer{
 		FabricLoader.getInstance()
 			.getEntrypointContainers("commandly", CommandlyPlugin.class)
 			.forEach(CommandlyMod::initialize);
-
 	}
 
 	private static void initialize(EntrypointContainer<CommandlyPlugin> plugin) {

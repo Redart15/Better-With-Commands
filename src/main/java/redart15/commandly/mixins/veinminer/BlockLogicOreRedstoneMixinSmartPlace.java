@@ -3,31 +3,28 @@ package redart15.commandly.mixins.veinminer;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.block.Block;
-import net.minecraft.core.block.BlockLogic;
 import net.minecraft.core.block.BlockLogicOreRedstone;
-import net.minecraft.core.block.material.Material;
 import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.pos.TilePosc;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import static redart15.commandly.CommandlyConfig.SMART_VALUE;
 
 @Mixin(value = BlockLogicOreRedstone.class, remap = false)
-public abstract class BlockLogicOreRedstoneMixinSmartPlace extends BlockLogic {
-
-
-	private BlockLogicOreRedstoneMixinSmartPlace(Block<?> block, Material material) {
-		super(block, material);
-	}
+public abstract class BlockLogicOreRedstoneMixinSmartPlace extends BlockLogicMixinSmartPlace{
 
 	@Override
-	public int getPlacedData(@Nullable Player player, @NotNull ItemStack itemStack, @NotNull World world, @NotNull TilePosc tilePos, @NotNull Side side, double xHit, double yHit) {
+	protected int getSmartPlacementData(
+		Player player, ItemStack itemStack,
+		World world, TilePosc tilePos,
+		Side side, double xHit, double yHit,
+		Operation<Integer> original
+	) {
 		return SMART_VALUE;
 	}
 

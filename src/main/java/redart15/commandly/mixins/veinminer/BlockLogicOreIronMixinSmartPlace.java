@@ -1,5 +1,6 @@
 package redart15.commandly.mixins.veinminer;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.BlockLogic;
 import net.minecraft.core.block.BlockLogicOreIron;
@@ -16,14 +17,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import static redart15.commandly.CommandlyConfig.SMART_VALUE;
 
 @Mixin(value = BlockLogicOreIron.class, remap = false)
-public abstract class BlockLogicOreIronMixinSmartPlace extends BlockLogic {
-
-	private BlockLogicOreIronMixinSmartPlace(Block<?> block, Material material) {
-		super(block, material);
-	}
+public abstract class BlockLogicOreIronMixinSmartPlace extends BlockLogicMixinSmartPlace{
 
 	@Override
-	public int getPlacedData(@Nullable Player player, @NotNull ItemStack itemStack, @NotNull World world, @NotNull TilePosc tilePos, @NotNull Side side, double xHit, double yHit) {
+	protected int getSmartPlacementData(
+		Player player, ItemStack itemStack,
+		World world, TilePosc tilePos,
+		Side side, double xHit, double yHit,
+		Operation<Integer> original
+	) {
 		return SMART_VALUE;
 	}
 }
