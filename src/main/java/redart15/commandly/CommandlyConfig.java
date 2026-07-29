@@ -1,32 +1,23 @@
 package redart15.commandly;
 
-import static redart15.commandly.CommandlyConfig.StrBuilder.str;
-import static redart15.commandly.CommandlyMod.LOGGER;
-import static redart15.commandly.CommandlyMod.MOD_ID;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.TomlConfigHandler;
 import turniplabs.halplibe.util.toml.Toml;
 
 import java.io.IOException;
 
 public class CommandlyConfig {
+	public static final String MOD_ID = "commandly";
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static int SMART_VALUE = 0b1000_0000;
 	public static boolean SMART_VEINMINER = false;
 	public static boolean SMART_TREECAPITATOR = false;
-
-	public static class StrBuilder{
-
-		public static StringBuilder str(){
-			return new StringBuilder();
-		}
-
-		public static StringBuilder str(String string){
-			return new StringBuilder(string);
-		}
-	}
-
+	public static boolean init = false;
 
 	public static void init() {
+		if(init) return;
+		init = true;
 		Toml properties = new Toml("Commandly Config");
 		properties.addCategory("Smart Commands")
 			.addEntry("SMART_VEINMINER", SMART_VEINMINER)
@@ -52,7 +43,7 @@ public class CommandlyConfig {
 	}
 
 	private static String key(String category, String key) {
-		return str(category).append(".").append(key).toString();
+		return new StringBuilder(category).append(".").append(key).toString();
 	}
 
 }

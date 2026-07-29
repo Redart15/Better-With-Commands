@@ -121,6 +121,7 @@ tasks {
 			from("src/main/resources/") {
 				include("fabric.mod.json")
 				include("*.mixins.json")
+//				include("conditional/*.mixins.json")
 				expand(resourceMap)
 			}
 		})

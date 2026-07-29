@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "redart15.commandly.mixins.treecapitator",
-  "compatibilityLevel": "JAVA_${java}",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlockLogLogicMixinSmartPlace",
     "SmartTreeCapitator"
@@ -9,5 +9,6 @@
   "client": [],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "redart15.commandly.mixins.CommandlyTreecapitator"
 }
