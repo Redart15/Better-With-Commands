@@ -1,4 +1,4 @@
-package redart15.commandly.mixins.mixin;
+package redart15.commandly.mixins.mixin.fix;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

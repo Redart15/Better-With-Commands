@@ -6,10 +6,19 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "BlockLogicAxisAlignedMixinFix",
-    "ItemToolPickaxeMixinVeinMining",
-    "StopGrassSpreadingMixin",
-    "StopMossSpreading"
+    "fix.BlockLogicAxisAlignedMixinFix",
+    "fix.ItemToolPickaxeMixinVeinMining",
+    "gamerules.SmartTreeCapitator",
+    "gamerules.StopGrassSpreadingMixin",
+    "gamerules.StopMossSpreading",
+    "smart.treecapitator.BlockLogLogicMixinSmartPlace",
+    "smart.veinminer.BlockLogicMixinSmartPlace",
+    "smart.veinminer.BlockLogicOreCoalMixinSmartPlace",
+    "smart.veinminer.BlockLogicOreDiamondMixinSmartPlace",
+    "smart.veinminer.BlockLogicOreGoldMixinSmartPlace",
+    "smart.veinminer.BlockLogicOreIronMixinSmartPlace",
+    "smart.veinminer.BlockLogicOreNetherCoalMixinSmartPlace",
+    "smart.veinminer.BlockLogicOreRedstoneMixinSmartPlace"
   ],
   "client": []
 }

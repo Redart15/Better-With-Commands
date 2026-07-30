@@ -57,13 +57,13 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 			((CommandSource) context.getSource()).sendTranslatableMessage("commandly.all.inactive");
 			return code(CANNOT);
 		}
-		Predicate<Block<?>> treecapitator = (block) -> false;
-		Predicate<Block<?>> veinmining = (block) -> false;
+		Predicate<Block<?>> treecapitator = block -> false;
+		Predicate<Block<?>> veinmining = block -> false;
 		if (CommandlyConfig.SMART_TREECAPITATOR) {
-			treecapitator = (block) -> TreeCapitator.canTreecapitated(block);
+			treecapitator = TreeCapitator::canTreecapitated;
 		}
 		if (CommandlyConfig.SMART_VEINMINER) {
-			veinmining = (block) -> VeinMining.canBeVeinMinedCommand(block);
+			veinmining = VeinMining::canBeVeinMinedCommand;
 		}
 		CommandSource source = (CommandSource) context.getSource();
 		World world = source.getWorld();
@@ -151,7 +151,7 @@ public class CommandProtect implements CommandManager.CommandRegistry {
 		int fx, fy, fz;
 		try {
 			fx = (int) Math.round(p1.getX(source));
-			fy = (int) Math.round(p1.getY(source, EnvironmentHelper.isServerEnvironment()));
+			fy = (int) Math.round(p1.getY(source, EnvironmentHelper.isMultiplayerServer()));
 			fz = (int) Math.round(p1.getZ(source));
 		} catch (CommandSyntaxException e) {
 			throw new RuntimeException(e);

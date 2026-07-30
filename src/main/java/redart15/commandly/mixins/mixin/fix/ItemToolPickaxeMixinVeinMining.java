@@ -1,4 +1,4 @@
-package redart15.commandly.mixins.mixin;
+package redart15.commandly.mixins.mixin.fix;
 
 import net.minecraft.core.block.Block;
 import net.minecraft.core.data.tag.Tag;

@@ -20,8 +20,7 @@
   "entrypoints": {
     "main": ["redart15.commandly.CommandlyMod"],
 		"client": ["redart15.commandly.CommandlyClient"],
-		"server": ["redart15.commandly.CommandlyServer"],
-		"preLaunch": ["redart15.commandly.CommandlyPreLaunch"]
+		"server": ["redart15.commandly.CommandlyServer"]
 	},
   "mixins": [
 		"commandly.mixins.json"

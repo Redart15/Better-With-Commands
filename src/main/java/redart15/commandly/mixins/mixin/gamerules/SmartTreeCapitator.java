@@ -1,4 +1,4 @@
-package redart15.commandly.mixins.treecapitator;
+package redart15.commandly.mixins.mixin.gamerules;
 
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

@@ -6,7 +6,6 @@ import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.minecraft.core.data.gamerule.GameRuleBoolean;
 import net.minecraft.core.data.gamerule.GameRules;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import redart15.commandly.api.CommandlyPlugin;
 import redart15.commandly.veincapitator.OreGroups;
 import redart15.commandly.veincapitator.PickAxeRegister;
@@ -15,8 +14,8 @@ import turniplabs.halplibe.event.defs.CommonEvents;
 import turniplabs.halplibe.util.dependency.Key;
 
 public class CommandlyMod implements ModInitializer{
-	public static final String MOD_ID = HalpLibe.registerMod("commandly");
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final String MOD_ID = HalpLibe.registerMod(CommandlyGlobals.MOD_ID);
+	public static final Logger LOGGER = CommandlyGlobals.LOGGER;
 	private static final int MASK = 7;
 	private static final int MAX_BLOCK_COUNT = 256 * 16 * 16 * 25;
 	public static final GameRuleBoolean MOSS_SPREADING = GameRules.register(new GameRuleBoolean("doMossSpreading", "gamerule.do_moss_spread", true));
@@ -26,6 +25,7 @@ public class CommandlyMod implements ModInitializer{
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Commandly initialized");
+		CommandlyConfig.init();
 		CommonEvents.AFTER_GAME_START.listen(Key.of(MOD_ID), CommandlyMod::afterGameStart);
 	}
 

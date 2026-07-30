@@ -1,4 +1,4 @@
-package redart15.commandly.mixins.mixin;
+package redart15.commandly.mixins.mixin.gamerules;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

@@ -1,4 +1,4 @@
-package redart15.commandly.mixins.veinminer;
+package redart15.commandly.mixins.mixin.smart.veinminer;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import static redart15.commandly.CommandlyConfig.SMART_VALUE;
+import static redart15.commandly.CommandlyConfig.*;
 
 @Mixin(value = BlockLogicOreRedstone.class, remap = false)
 public abstract class BlockLogicOreRedstoneMixinSmartPlace extends BlockLogicMixinSmartPlace{
@@ -25,7 +25,7 @@ public abstract class BlockLogicOreRedstoneMixinSmartPlace extends BlockLogicMix
 		Side side, double xHit, double yHit,
 		Operation<Integer> original
 	) {
-		return SMART_VALUE;
+		return getPlacedMetadata(SMART_VEINMINER);
 	}
 
 	@WrapOperation(method = "lightRedstone", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/world/World;setBlockTypeNotify(Lnet/minecraft/core/world/pos/TilePosc;Lnet/minecraft/core/block/Block;)Z"))

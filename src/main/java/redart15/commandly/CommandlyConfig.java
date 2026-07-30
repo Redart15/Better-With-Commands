@@ -1,6 +1,4 @@
 package redart15.commandly;
-
-import static redart15.commandly.CommandlyConfig.StrBuilder.str;
 import static redart15.commandly.CommandlyMod.LOGGER;
 import static redart15.commandly.CommandlyMod.MOD_ID;
 
@@ -10,21 +8,10 @@ import turniplabs.halplibe.util.toml.Toml;
 import java.io.IOException;
 
 public class CommandlyConfig {
-	public static int SMART_VALUE = 0b1000_0000;
+	private CommandlyConfig(){}
+	private static int SMART_VALUE = 0b1000_0000;
 	public static boolean SMART_VEINMINER = false;
 	public static boolean SMART_TREECAPITATOR = false;
-
-	public static class StrBuilder{
-
-		public static StringBuilder str(){
-			return new StringBuilder();
-		}
-
-		public static StringBuilder str(String string){
-			return new StringBuilder(string);
-		}
-	}
-
 
 	public static void init() {
 		Toml properties = new Toml("Commandly Config");
@@ -52,7 +39,14 @@ public class CommandlyConfig {
 	}
 
 	private static String key(String category, String key) {
-		return str(category).append(".").append(key).toString();
+		return new StringBuilder(category).append(".").append(key).toString();
+	}
+
+	public static int getPlacedMetadata(boolean value){
+		if(value){
+			return SMART_VALUE;
+		}
+		return 0;
 	}
 
 }
