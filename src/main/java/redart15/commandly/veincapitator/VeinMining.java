@@ -1,5 +1,6 @@
 package redart15.commandly.veincapitator;
 
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.block.*;
 import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.block.tag.BlockTags;
@@ -187,7 +188,7 @@ public class VeinMining {
 
 	private Set<TilePosc> findAllOreBlocks(int veinSize) {
 		Queue<TilePosc> queue = new ArrayDeque<>();
-		Set<TilePosc> visited = new LinkedHashSet<>();
+		Set<TilePosc> visited = new HashSet<>();
 
 		queue.add(this.point);
 		visited.add(this.point);
@@ -256,7 +257,7 @@ public class VeinMining {
 	public class ItemList {
 		private final World world;
 		private final TilePosc point;
-		private final Map<ItemStack, Integer> itemList = new HashMap<>();
+		private final Map<ItemStack, Integer> itemList = new Object2IntOpenHashMap<>();
 
 		public ItemList(World world, TilePosc point) {
 			this.world = world;

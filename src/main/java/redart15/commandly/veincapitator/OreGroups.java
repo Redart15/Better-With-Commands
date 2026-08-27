@@ -2,6 +2,7 @@ package redart15.commandly.veincapitator;
 
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.Blocks;
+import net.minecraft.core.data.registry.Registry;
 import net.minecraft.core.util.collection.NamespaceID;
 
 import java.util.HashMap;
@@ -24,14 +25,14 @@ public class OreGroups {
 
 		/**
 		 * @implNote Returns a builder to allow chain add.
-		 * */
+		 */
 		public static OreGroupBuilder register(String oreGroup) {
 			return new OreGroupBuilder(oreGroup);
 		}
 
 		/**
 		 * @implNote Add ore and its variation to a lookup table.
-		 * */
+		 */
 		public OreGroupBuilder addOre(Block<?> block) {
 			instance.addOreGroup(this.oreGroupName, block);
 			return this;
@@ -39,21 +40,22 @@ public class OreGroups {
 	}
 
 	public static void init() {
-		if(instance == null){
+		if (instance == null) {
 			instance = new OreGroups();
 		}
 		instance.load();
 	}
 
-	public static OreGroups getInstance(){
+	public static OreGroups getInstance() {
 		return instance;
 	}
 
-	public static OreGroupBuilder register(String string){
+	public static OreGroupBuilder register(String string) {
 		return new OreGroupBuilder(string);
 	}
 
-	private OreGroups() {}
+	private OreGroups() {
+	}
 
 	private void load() {
 		OreGroups.register("coal")
@@ -92,7 +94,9 @@ public class OreGroups {
 			.addOre(Blocks.ORE_LAPIS_PERMAFROST);
 
 		OreGroups.register("nether_coal")
-			.addOre(Blocks.ORE_NETHERCOAL_NETHERRACK);
+			.addOre(Blocks.ORE_NETHERCOAL_NETHERRACK)
+			.addOre(Blocks.ORE_NETHERCOAL_BASALT)
+			.addOre(Blocks.ORE_NETHERCOAL_GLOOMSTONE);
 
 		OreGroups.register("lapis")
 			.addOre(Blocks.ORE_REDSTONE_STONE)

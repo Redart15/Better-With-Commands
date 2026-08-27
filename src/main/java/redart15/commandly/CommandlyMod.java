@@ -6,6 +6,7 @@ import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.minecraft.core.data.gamerule.GameRuleBoolean;
 import net.minecraft.core.data.gamerule.GameRules;
 import org.slf4j.Logger;
+import redart15.commandly.api.CommandlyEvent;
 import redart15.commandly.api.CommandlyPlugin;
 import redart15.commandly.veincapitator.OreGroups;
 import redart15.commandly.veincapitator.PickAxeRegister;
@@ -36,6 +37,8 @@ public class CommandlyMod implements ModInitializer{
 		FabricLoader.getInstance()
 			.getEntrypointContainers("commandly", CommandlyPlugin.class)
 			.forEach(CommandlyMod::initialize);
+		CommandlyEvent.REGISTER_ORE.emit(ore -> ore.accept(OreGroups.getInstance()));
+		CommandlyEvent.REGISTER_PICKAXE.emit(ore -> ore.accept(PickAxeRegister.getInstance()));
 	}
 
 	private static void initialize(EntrypointContainer<CommandlyPlugin> plugin) {

@@ -11,6 +11,7 @@
     "gamerules.SmartTreeCapitator",
     "gamerules.StopGrassSpreadingMixin",
     "gamerules.StopMossSpreading",
+    "smart.treecapitator.BlockLogicMixinTreeCap",
     "smart.treecapitator.BlockLogLogicMixinSmartPlace",
     "smart.veinminer.BlockLogicMixinSmartPlace",
     "smart.veinminer.BlockLogicOreCoalMixinSmartPlace",

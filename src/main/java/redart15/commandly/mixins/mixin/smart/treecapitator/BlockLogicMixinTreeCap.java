@@ -1,30 +1,24 @@
 package redart15.commandly.mixins.mixin.smart.treecapitator;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import net.minecraft.core.block.BlockLogicLog;
+import net.minecraft.core.block.BlockLogicAxisAligned;
 import net.minecraft.core.entity.Mob;
 import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.world.World;
 import net.minecraft.core.world.pos.TilePosc;
 import org.spongepowered.asm.mixin.Mixin;
-import redart15.commandly.CommandlyConfig;
 
-import static redart15.commandly.CommandlyConfig.getPlacedMetadata;
+@Mixin(BlockLogicAxisAligned.class)
+public class BlockLogicMixinTreeCap {
 
-@Mixin(value = BlockLogicLog.class, remap = false)
-public abstract class BlockLogLogicMixinSmartPlace extends BlockLogicMixinTreeCap {
-
-	@Override
+	@WrapMethod(method = "onPlacedByMob")
 	public void onPlacedByMobSmart(World world, TilePosc tilePos, Side side, Mob mob, double xHit, double yHit, Operation<Void> original) {
 		original.call(world, tilePos, side, mob, xHit, yHit);
-		int metadata = world.getBlockData(tilePos);
-		world.setBlockData(tilePos, metadata ^ getPlacedMetadata(CommandlyConfig.SMART_TREECAPITATOR));
 	}
 
-	@Override
+	@WrapMethod(method = "onPlacedOnSide")
 	public void onPlacedOnSideSmart(World world, TilePosc tilePos, Side side, double xHit, double yHit, Operation<Void> original) {
 		original.call(world, tilePos, side, xHit, yHit);
-		int metadata = world.getBlockData(tilePos);
-		world.setBlockData(tilePos, metadata ^ getPlacedMetadata(CommandlyConfig.SMART_TREECAPITATOR));
 	}
 }
